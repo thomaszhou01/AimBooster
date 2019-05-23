@@ -13,7 +13,6 @@ public class FrameEnclose extends JFrame{
 		c.setBackground(Color.gray);
 		c.setLayout(null);
 		menu = new Game();
-        menu.setBounds(50, 200, 900,700);    
 		c.add(menu);
 		
 	}

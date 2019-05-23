@@ -19,6 +19,7 @@ public class MainMenu extends JPanel implements ActionListener{
 		this.setBackground(Color.LIGHT_GRAY);
 		this.setSize(200, 200);
 
+
 	}
 	
 	
