@@ -5,8 +5,9 @@ import javax.swing.*;
 
 public class MainMenu extends JPanel implements ActionListener{
 	
-	Timer tock;
+	public int radius;
 
+	
 	private int tickrate = 16;
 	private int x;
 	public static int MENULENGTH;
@@ -15,14 +16,20 @@ public class MainMenu extends JPanel implements ActionListener{
 
 	
 	public MainMenu() {
-		tock = new Timer(tickrate, this);
-		tock.start();
+		this.setBackground(Color.LIGHT_GRAY);
+		this.setSize(200, 200);
+
 	}
+	
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.fillOval(0, 0, radius, 40);
+		g.fillOval(400, 400, 40, 40);
 
 	}
+	
+	
 	public void actionPerformed(ActionEvent e) {
 	}
 }
