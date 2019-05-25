@@ -3,13 +3,11 @@
 public class Target{	
 	private int diameter;
 	private int radius;
-	private boolean not200 = true;
+	private boolean not200;
 
 	
 	public Target() {
-		diameter = 0;
-		circleSize();
-		
+		not200 = true;
 	}
 	
 	public int getRadius() {
@@ -20,29 +18,34 @@ public class Target{
 		return diameter;
 	}
 	//changes circle size
-	public int circleSize() {
-		radius = diameter/2;
-		if(diameter<= 200 && not200) {
-			diameter += 1;
-			if(diameter==200) {
+	public int circleSize(int newDiameter) {
+		if(newDiameter<= 200 && not200) {
+			newDiameter += 1;
+			if(newDiameter==200) {
 				not200 = false;
 			}
 			
 		}
+		else if(newDiameter<0) {
+			newDiameter = 0;
+			not200 = true;
+		}
 		else {
-			diameter -= 1;
-			if(diameter == 0) {
+			newDiameter -= 1;
+			if(newDiameter == 0) {
 				not200 = true;
 			}
 		}
-		return diameter;
+		
+		return newDiameter;
 	}	
 	
 	
-	public boolean insideCircle(int x, int y) {
+	public boolean insideCircle(int x, int y, int mouseX, int mouseY, int diameter) {
 		double fromCenterDist;
+		radius = diameter/2;
 		
-		fromCenterDist = Math.sqrt((Math.pow(x-500/2, 2)+Math.pow(y-500/2, 2)));
+		fromCenterDist = Math.sqrt((Math.pow(mouseX-x/2, 2)+Math.pow(mouseY-y/2, 2)));
 		if (fromCenterDist <= radius) {
 			return true;
 		}

@@ -1,52 +1,93 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.ArrayList;
 
 
 public class Game extends JPanel implements ActionListener{
 	
 	public int radius;
 	public int jPanelLength;
-	public int jPanelWidth;
+	public int jPanelHeight;
 
 	private int xValue;
 	private int yValue;
 	private int diameter;
-	private boolean not200;
-	private String hit = " ";
+	private int count;
+	private boolean insideCircle;
 	private Image image;
+	private int[][] circleLoc = new int[2][4];
+	
+	private ArrayList<Integer> circleX = new ArrayList<Integer>();
+	private ArrayList<Integer> circleY = new ArrayList<Integer>();
+	private ArrayList<Integer> circleDiameter = new ArrayList<Integer>();
+
+
+
 
 	Target target = new Target();
 
+	//constructor
 	public Game() {
 		super();
 		jPanelLength = 900;
-		jPanelWidth = 700;
-        this.setBounds(50, 200, jPanelLength,jPanelWidth);    
+		jPanelHeight = 800;
+        this.setBounds(50, 100, jPanelLength,jPanelHeight);    
 
+        count = 0;
 		diameter = 0;
+		insideCircle = false;
+		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				xValue = e.getX();
 				yValue = e.getY();
 			}
 		});	
-		
-		target.insideCircle(xValue, yValue);
-		image = new ImageIcon("bin/target.png").getImage();
+		image = new ImageIcon("src/Images/target.png").getImage();
 	}
 	
+	//paintcomponent
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		diameter = target.circleSize();
-		for(int i = 1; i<400; i=i+10) {
-			g.drawOval(0, i, diameter, diameter);
+		count++;
+		if(count%200 == 0 || count == 1) {
+			randomCircle();
 		}
-		g.fillOval(400, 400, 40, 40);
-		g.drawImage(image, 0, 0, diameter, diameter, this);
-
+		
+		
+		diameter = target.circleSize(diameter);
+		
+		
+		for(int i = 0; i<circleX.size(); i++) {
+			g.drawImage(image, circleX.get(i)-diameter/2, circleY.get(i)-diameter/2, diameter, diameter, this);
+		}
+		
+		for(int i = 0; i <circleLoc[0].length; i++) {
+			insideCircle = target.insideCircle(circleLoc[0][i], circleLoc[1][i], xValue, yValue, diameter);
+			if(insideCircle) {
+				break;
+			}
+		}
+		g.fillOval(xValue-5, yValue-5, 10, 10);
 	}
 	
+	//create random circles
+	public void randomCircle() {
+
+		circleX.add((int)(Math.random()*jPanelLength));
+		circleY.add((int)(Math.random()*jPanelHeight));
+		circleDiameter.add(1);
+		
+	}
+	
+	public void removeCircle() {
+		for(int i = 0; i<circleDiameter.size(); i++) {
+			if(circleDiameter.get(i)==0) {
+				circleDiameter.remove(i);
+			}
+		}
+	}
 	
 	public void actionPerformed(ActionEvent e) {
 	}

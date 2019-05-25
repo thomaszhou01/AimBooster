@@ -12,14 +12,13 @@ public class MainMenu extends JPanel implements ActionListener{
 	private int x;
 	public static int MENULENGTH;
 	public static int MENUWIDTH;
-	private JLabel title = new JLabel("Aim Booster");
 
 	
 	public MainMenu() {
 		this.setBackground(Color.LIGHT_GRAY);
 		this.setSize(200, 200);
-
-
+		
+		
 	}
 	
 	
