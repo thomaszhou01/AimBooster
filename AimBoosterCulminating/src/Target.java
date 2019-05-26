@@ -54,9 +54,9 @@ public class Target{
 		mouseX  = x;
 		mouseY = y;
 	}
+	
 	//changes circle size
 	public double circleSize() {
-		//figure out way for not200 to be be here
 		if(diameter<= 200 && not200) {
 			diameter += 1;
 			if(diameter==200) {
@@ -74,7 +74,6 @@ public class Target{
 			}
 		}
 		radius = diameter/2;
-		//fix
 		fromCenterDist = Math.sqrt((Math.pow(mouseX-xValue, 2)+Math.pow(mouseY-yValue, 2)));
 		return diameter;
 	}	
