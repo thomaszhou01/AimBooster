@@ -12,11 +12,8 @@ public class Game extends JPanel implements ActionListener{
 
 	private int xValue;
 	private int yValue;
-	private int diameter;
 	private int count;
-	private boolean insideCircle;
-	private int[][] circleLoc = new int[2][4];
-	
+
 	private ArrayList<Target> targets = new ArrayList<Target>();
 
 
@@ -28,35 +25,48 @@ public class Game extends JPanel implements ActionListener{
         this.setBounds(50, 100, jPanelLength,jPanelHeight);    
 
         count = 0;
-		diameter = 0;
-		insideCircle = false;
-		
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				xValue = e.getX();
 				yValue = e.getY();
 			}
 		});	
+		setDoubleBuffered(true);
 	}
 	
 	//paintcomponent
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		count++;
-		if(count%500 == 0 || count == 1) {
+		//adds only one circle
+		if(count%300 == 0 ||count == 1) {
 			randomCircle();
 		}
 		
 		//effects this
-		
-		removeCircle();
-		
-		for(int i = 0; i<targets.size(); i++) {
-			targets.get(i).circleSize();
-			g.drawImage(targets.get(i).getImage(), targets.get(i).getLocX(), targets.get(i).getLocY(), targets.get(i).getDiameter(), targets.get(i).getDiameter(), this);
+		g.drawString(xValue+"", 200, 200);
+		g.drawString(yValue+"", 200, 220);
+
+		//creates target if there are any
+		if(targets.size()>0) {
+			//creates targets
+			for(int i = 0; i<targets.size(); i++) {
+				targets.get(i).circleSize();
+				
+				g.drawImage(targets.get(i).getImage(), (int)targets.get(i).getLocX(), (int)targets.get(i).getLocY(), (int)targets.get(i).getDiameter(), (int)targets.get(i).getDiameter(), this);
+				
+				targets.get(i).setMouseLoc(xValue, yValue);
+				
+				removeCircle(i);
+
+				if(targets.get(i).insideCircle()) {
+					targets.remove(i);
+				}
+			}
 		}
-		
-		g.fillOval(xValue-5, yValue-5, 10, 10);
+
+		g.fillOval(xValue-2, yValue-2, 4, 4);
+		Toolkit.getDefaultToolkit().sync();
 	}
 	
 	
@@ -69,9 +79,9 @@ public class Game extends JPanel implements ActionListener{
 		
 	}
 	
-	public void removeCircle() {
-		if(targets.size()>6) {
-			targets.remove(0);
+	public void removeCircle(int i) {
+		if(targets.get(i).getDiameter()==0) {
+			targets.remove(i);
 
 		}
 	}

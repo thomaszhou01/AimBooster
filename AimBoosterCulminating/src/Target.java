@@ -3,12 +3,13 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Target{	
-	private int diameter;
-	private int radius;
+	private double diameter;
+	private double radius;
 	private int xValue;
 	private int yValue;
 	private int mouseX;
 	private int mouseY;
+	private double fromCenterDist;
 	private boolean not200;
 	private Image image;
 	
@@ -37,15 +38,15 @@ public class Target{
 	}
 	
 	
-	public int getDiameter() {
+	public double getDiameter() {
 		return diameter;
 	}
 	
-	public int getLocX() {
+	public double getLocX() {
 		return (xValue-diameter/2);
 	}
 	
-	public int getLocY() {
+	public double getLocY() {
 		return (yValue-diameter/2);
 	}
 	
@@ -54,7 +55,7 @@ public class Target{
 		mouseY = y;
 	}
 	//changes circle size
-	public int circleSize() {
+	public double circleSize() {
 		//figure out way for not200 to be be here
 		if(diameter<= 200 && not200) {
 			diameter += 1;
@@ -72,18 +73,25 @@ public class Target{
 				not200 = true;
 			}
 		}
-		
+		radius = diameter/2;
+		//fix
+		fromCenterDist = Math.sqrt((Math.pow(mouseX-xValue, 2)+Math.pow(mouseY-yValue, 2)));
 		return diameter;
 	}	
 	
 	public boolean getNot200() {
 		return not200;
 	}
-	public boolean insideCircle(int x, int y, int mouseX, int mouseY, int diameter) {
-		double fromCenterDist;
-		radius = diameter/2;
-		
-		fromCenterDist = Math.sqrt((Math.pow(mouseX-x/2, 2)+Math.pow(mouseY-y/2, 2)));
+	
+	public double getCenterDist() {
+		return fromCenterDist;
+
+	}
+	
+	public double getRadius() {
+		return radius;
+	}
+	public boolean insideCircle() {
 		if (fromCenterDist <= radius) {
 			return true;
 		}
