@@ -3,6 +3,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Target{	
+	
+	private static int maxCircleSize;
 	private double diameter;
 	private double radius;
 	private int xValue;
@@ -20,6 +22,7 @@ public class Target{
 		not200 = true;
 		xValue = x;
 		yValue = y;
+		maxCircleSize = 200;
 		diameter = 0;
 		image = new ImageIcon("src/Images/target.png").getImage();
 
@@ -57,18 +60,19 @@ public class Target{
 	
 	//changes circle size
 	public double circleSize() {
-		if(diameter<= 200 && not200) {
-			diameter += 1;
-			if(diameter==200) {
+		
+		if(diameter<= maxCircleSize && not200) {
+			diameter += 0.5;
+			if(diameter==maxCircleSize) {
 				not200 = false;
 			}
 		}
 		else if(diameter<0) {
-			diameter = 0;
+			diameter = 0.5;
 			not200 = true;
 		}
 		else {
-			diameter -= 1;
+			diameter -= 0.5;
 			if(diameter == 0) {
 				not200 = true;
 			}

@@ -8,8 +8,6 @@ public class MainMenu extends JPanel implements ActionListener{
 	public int radius;
 
 	
-	private int tickrate = 16;
-	private int x;
 	public static int MENULENGTH;
 	public static int MENUWIDTH;
 

@@ -59,8 +59,10 @@ public class Game extends JPanel implements ActionListener{
 				
 				removeCircle(i);
 
-				if(targets.get(i).insideCircle()) {
+				if(targets.size()>0 && targets.get(i).insideCircle()) {
 					targets.remove(i);
+					xValue = -100;
+					yValue = -100;
 				}
 			}
 		}
