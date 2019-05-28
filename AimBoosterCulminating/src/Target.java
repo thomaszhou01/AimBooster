@@ -5,6 +5,8 @@ import javax.swing.ImageIcon;
 public class Target{	
 	
 	private static int maxCircleSize;
+	private static int maxCircleRadius;
+	private static double circleExpandRate;
 	private double diameter;
 	private double radius;
 	private int xValue;
@@ -13,16 +15,18 @@ public class Target{
 	private int mouseY;
 	private double fromCenterDist;
 	private boolean not200;
-	private Image image;
+	private static Image image;
 	
 	
 
 	
-	public Target(int x, int y, int diameter) {
+	public Target(int x, int y) {
 		not200 = true;
 		xValue = x;
 		yValue = y;
+		circleExpandRate = 0.5;
 		maxCircleSize = 200;
+		maxCircleRadius = maxCircleSize/2;
 		diameter = 0;
 		image = new ImageIcon("src/Images/target.png").getImage();
 
@@ -40,7 +44,9 @@ public class Target{
 		return yValue;
 	}
 	
-	
+	public static int getMaxRadius() {
+		return maxCircleRadius;
+	}
 	public double getDiameter() {
 		return diameter;
 	}
@@ -62,17 +68,17 @@ public class Target{
 	public double circleSize() {
 		
 		if(diameter<= maxCircleSize && not200) {
-			diameter += 0.5;
-			if(diameter==maxCircleSize) {
+			diameter += circleExpandRate;
+			if(diameter>=maxCircleSize && diameter<=maxCircleSize+1 && not200) {
 				not200 = false;
 			}
 		}
 		else if(diameter<0) {
-			diameter = 0.5;
+			diameter = 0;
 			not200 = true;
 		}
 		else {
-			diameter -= 0.5;
+			diameter -= circleExpandRate;
 			if(diameter == 0) {
 				not200 = true;
 			}

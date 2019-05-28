@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Game extends JPanel implements ActionListener{
@@ -9,13 +10,16 @@ public class Game extends JPanel implements ActionListener{
 	public int radius;
 	public int jPanelLength;
 	public int jPanelHeight;
-
 	private int xValue;
 	private int yValue;
 	private int count;
+	private int clicks;
+	private int hits;
+	private int lives;
+
 
 	private ArrayList<Target> targets = new ArrayList<Target>();
-
+	private Random random = new Random();
 
 	//constructor
 	public Game() {
@@ -25,10 +29,14 @@ public class Game extends JPanel implements ActionListener{
         this.setBounds(50, 100, jPanelLength,jPanelHeight);    
 
         count = 0;
+        clicks = 0;
+        hits = 0;
+        lives = 10;
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				xValue = e.getX();
 				yValue = e.getY();
+				clicks++;
 			}
 		});	
 		setDoubleBuffered(true);
@@ -39,13 +47,14 @@ public class Game extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		count++;
 		//adds only one circle
-		if(count%300 == 0 ||count == 1) {
+		if(count%200 == 0 ||count == 1) {
 			randomCircle();
 		}
 		
-		//effects this
-		g.drawString(xValue+"", 200, 200);
-		g.drawString(yValue+"", 200, 220);
+		
+		g.drawString(hitPercent()+"%", 10, 10);
+		g.drawString(hits+"/"+clicks, 10, 20);
+		g.drawString(lives+"", 10, 30);
 
 		//creates target if there are any
 		if(targets.size()>0) {
@@ -54,20 +63,23 @@ public class Game extends JPanel implements ActionListener{
 				targets.get(i).circleSize();
 				
 				g.drawImage(targets.get(i).getImage(), (int)targets.get(i).getLocX(), (int)targets.get(i).getLocY(), (int)targets.get(i).getDiameter(), (int)targets.get(i).getDiameter(), this);
-				
 				targets.get(i).setMouseLoc(xValue, yValue);
 				
-				removeCircle(i);
-
+				//removes circles
+				removeCircle(i);	
+			}
+			
+			for(int i = 0; i<targets.size(); i++) {
 				if(targets.size()>0 && targets.get(i).insideCircle()) {
 					targets.remove(i);
 					xValue = -100;
 					yValue = -100;
+					hits++;
 				}
 			}
 		}
 
-		g.fillOval(xValue-2, yValue-2, 4, 4);
+		g.fillOval(xValue, yValue, 2, 2);
 		Toolkit.getDefaultToolkit().sync();
 	}
 	
@@ -75,19 +87,28 @@ public class Game extends JPanel implements ActionListener{
 	//create random circles
 	public void randomCircle() {
 
-		int randX = (int)(Math.random()*jPanelLength);
-		int randY = (int)(Math.random()*jPanelHeight);
-        targets.add(new Target(randX, randY, 0));
+		int randX = random.nextInt(jPanelLength-2*Target.getMaxRadius())+Target.getMaxRadius();
+		int randY = random.nextInt(jPanelHeight-2*Target.getMaxRadius())+Target.getMaxRadius();
+        targets.add(new Target(randX, randY));
 		
 	}
 	
 	public void removeCircle(int i) {
 		if(targets.get(i).getDiameter()==0) {
 			targets.remove(i);
-
+			lives--;
 		}
 	}
 	
+	public double hitPercent() {
+		double hitPercent = Math.round((hits/(double)clicks)*100.0);
+		
+		return hitPercent;
+	}
+	
+	public int getLives() {
+		return lives;
+	}
 	public void actionPerformed(ActionEvent e) {
 	}
 }
