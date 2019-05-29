@@ -112,6 +112,15 @@ public class Game extends JPanel implements ActionListener{
 	public int getLives() {
 		return lives;
 	}
+	
+	public void resetGame() {
+		count = 0;
+        clicks = 0;
+        hits = 0;
+        lives = 10;
+        targets.clear();
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 	}
 }
