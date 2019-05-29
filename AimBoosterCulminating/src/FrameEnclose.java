@@ -9,6 +9,7 @@ import javax.swing.*;
 
 public class FrameEnclose extends JFrame implements ActionListener{
     static MainMenu menu;
+    static Game game;
     static JTextField textfield1, textfield2, textfield3, textArea;
     
     Container c = getContentPane();
@@ -16,7 +17,10 @@ public class FrameEnclose extends JFrame implements ActionListener{
     public FrameEnclose(String a) {
         super(a);
         c.setLayout(null);
-
+        c.setBackground(Color.gray);
+        game = new Game();
+        
+        
         JButton b1 = new JButton("idk what to put here");
         b1.setBounds(150, 400, 300, 100);
         b1.setBackground(Color.yellow);
@@ -69,6 +73,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         jmiAbout.addActionListener(this);
 
         this.setJMenuBar(jmb);
+        c.add(game);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -92,5 +97,13 @@ public class FrameEnclose extends JFrame implements ActionListener{
         
         String comStr = e.getActionCommand();
     }
-
+    
+    public void paint(Graphics g) {
+		super.paint(g);
+		if(game.getLives() == 0) {
+			c.remove(game);
+		}
+		repaint();
+	}
+    
 }
