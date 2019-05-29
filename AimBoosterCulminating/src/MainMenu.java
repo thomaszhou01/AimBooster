@@ -14,7 +14,7 @@ public class MainMenu extends JPanel implements ActionListener{
 	
 	public MainMenu() {
 		this.setBackground(Color.LIGHT_GRAY);
-		this.setSize(200, 200);
+		this.setBounds(100, 100, 800, 800);
 		
 		
 	}
@@ -22,8 +22,6 @@ public class MainMenu extends JPanel implements ActionListener{
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.fillOval(0, 0, radius, 40);
-		g.fillOval(400, 400, 40, 40);
 
 	}
 	

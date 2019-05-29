@@ -17,16 +17,15 @@ public class Game extends JPanel implements ActionListener{
 	private int hits;
 	private int lives;
 
-
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private Random random = new Random();
 
+	
 	//constructor
 	public Game() {
 		super();
 		jPanelLength = 900;
 		jPanelHeight = 800;
-        this.setBounds(50, 100, jPanelLength,jPanelHeight);    
 
         count = 0;
         clicks = 0;
@@ -36,10 +35,12 @@ public class Game extends JPanel implements ActionListener{
 			public void mousePressed(MouseEvent e) {
 				xValue = e.getX();
 				yValue = e.getY();
+				//from https://stackoverflow.com/questions/3383887/how-to-record-the-number-of-mouse-clicks
 				clicks++;
 			}
 		});	
 		setDoubleBuffered(true);
+        this.setBounds(50, 100, jPanelLength,jPanelHeight);
 	}
 	
 	//paintcomponent
@@ -62,6 +63,7 @@ public class Game extends JPanel implements ActionListener{
 			for(int i = 0; i<targets.size(); i++) {
 				targets.get(i).circleSize();
 				
+				//from https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel
 				g.drawImage(targets.get(i).getImage(), (int)targets.get(i).getLocX(), (int)targets.get(i).getLocY(), (int)targets.get(i).getDiameter(), (int)targets.get(i).getDiameter(), this);
 				targets.get(i).setMouseLoc(xValue, yValue);
 				
@@ -87,6 +89,7 @@ public class Game extends JPanel implements ActionListener{
 	//create random circles
 	public void randomCircle() {
 
+		//from https://stackoverflow.com/questions/32534601/java-getting-a-random-number-from-100-to-999
 		int randX = random.nextInt(jPanelLength-2*Target.getMaxRadius())+Target.getMaxRadius();
 		int randY = random.nextInt(jPanelHeight-2*Target.getMaxRadius())+Target.getMaxRadius();
         targets.add(new Target(randX, randY));

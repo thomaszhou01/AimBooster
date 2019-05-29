@@ -15,6 +15,8 @@ public class Target{
 	private int mouseY;
 	private double fromCenterDist;
 	private boolean not200;
+	
+	//from https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel
 	private static Image image;
 	
 	
@@ -84,6 +86,8 @@ public class Target{
 			}
 		}
 		radius = diameter/2;
+		
+		//from https://stackoverflow.com/questions/22269951/using-listeners-and-mouse-pointer-location-to-check-if-pointer-is-inside-of-a-ci
 		fromCenterDist = Math.sqrt((Math.pow(mouseX-xValue, 2)+Math.pow(mouseY-yValue, 2)));
 		return diameter;
 	}	
