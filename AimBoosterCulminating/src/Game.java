@@ -13,9 +13,10 @@ public class Game extends JPanel implements ActionListener{
 	private int xValue;
 	private int yValue;
 	private int count;
-	private int clicks;
-	private int hits;
-	private int lives;
+	private static int clicks;
+	private static int hits;
+	private static int lives;
+	private static double hitPercent;
 
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private Random random = new Random();
@@ -24,13 +25,16 @@ public class Game extends JPanel implements ActionListener{
 	//constructor
 	public Game() {
 		super();
+		//assign default values
 		jPanelLength = 900;
-		jPanelHeight = 800;
+		jPanelHeight = 600;
 
         count = 0;
         clicks = 0;
         hits = 0;
         lives = 10;
+        
+        //add mouse listener
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				xValue = e.getX();
@@ -46,18 +50,14 @@ public class Game extends JPanel implements ActionListener{
 	//paintcomponent
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		//count to determine when to add circle
 		count++;
 		//adds only one circle
 		if(count%200 == 0 ||count == 1) {
 			randomCircle();
 		}
 		
-		
-		g.drawString(hitPercent()+"%", 10, 10);
-		g.drawString(hits+"/"+clicks, 10, 20);
-		g.drawString(lives+"", 10, 30);
-
-		//creates target if there are any
+		//creates target if there are elements in array
 		if(targets.size()>0) {
 			//creates targets
 			for(int i = 0; i<targets.size(); i++) {
@@ -71,14 +71,18 @@ public class Game extends JPanel implements ActionListener{
 				removeCircle(i);	
 			}
 			
+			//removes hit circles
 			for(int i = 0; i<targets.size(); i++) {
 				if(targets.size()>0 && targets.get(i).insideCircle()) {
-					targets.remove(i);
 					xValue = -100;
 					yValue = -100;
+					targets.remove(i);
 					hits++;
 				}
 			}
+			
+			xValue = -100;
+			yValue = -100;
 		}
 
 		g.fillOval(xValue, yValue, 2, 2);
@@ -97,6 +101,7 @@ public class Game extends JPanel implements ActionListener{
 	}
 	
 	public void removeCircle(int i) {
+		//removes circle if its 0
 		if(targets.get(i).getDiameter()==0) {
 			targets.remove(i);
 			lives--;
@@ -104,8 +109,8 @@ public class Game extends JPanel implements ActionListener{
 	}
 	
 	public double hitPercent() {
-		double hitPercent = Math.round((hits/(double)clicks)*100.0);
-		
+		//displays hit percent
+		hitPercent = Math.round((hits/(double)clicks)*100.0);
 		return hitPercent;
 	}
 	
@@ -113,7 +118,15 @@ public class Game extends JPanel implements ActionListener{
 		return lives;
 	}
 	
+	public int getHits() {
+		return hits;
+	}
+	
+	public int getClicks() {
+		return clicks;
+	}
 	public void resetGame() {
+		//resets game
 		count = 0;
         clicks = 0;
         hits = 0;

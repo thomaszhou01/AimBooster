@@ -5,7 +5,7 @@ public class AimBooster {
 	
 	public static void main(String[] args) {
 		FrameEnclose frame = new FrameEnclose("Aim Booster");
-		frame.setSize(1000, 1000);
+		frame.setSize(1000, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false); 
 		frame.setVisible(true); 

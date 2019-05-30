@@ -68,7 +68,7 @@ public class Target{
 	
 	//changes circle size
 	public double circleSize() {
-		
+		//determine circle's size
 		if(diameter<= maxCircleSize && not200) {
 			diameter += circleExpandRate;
 			if(diameter>=maxCircleSize && diameter<=maxCircleSize+1 && not200) {
@@ -104,6 +104,8 @@ public class Target{
 	public double getRadius() {
 		return radius;
 	}
+	
+	//checks if click is inside the circle
 	public boolean insideCircle() {
 		if (fromCenterDist <= radius) {
 			return true;

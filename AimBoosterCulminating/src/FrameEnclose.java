@@ -8,6 +8,7 @@ import javax.swing.*;
 public class FrameEnclose extends JFrame implements ActionListener{
     static MainMenu menu;
     static Game game;
+    static GameStats stats;
     
     JButton b1, b2;
     Container c = getContentPane();
@@ -17,13 +18,14 @@ public class FrameEnclose extends JFrame implements ActionListener{
         c.setLayout(null);
         c.setBackground(Color.gray);
         game = new Game();
+        stats = new GameStats();
         
         //buttons 
         b1 = new JButton("Stuff");
-        b1.setBounds(150, 400, 300, 100);
+        b1.setBounds(150, 300, 300, 100);
         b1.setBackground(Color.yellow);
         b2 = new JButton("Start");
-        b2.setBounds(500, 400, 300, 100);
+        b2.setBounds(500, 300, 300, 100);
         b2.setBackground(Color.yellow);
         b1.addActionListener(this);
         b2.addActionListener(this);
@@ -82,8 +84,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent e) {
-
-    	//determines what menubar does 
+    	//determines what menubar and buttons do
         if(e.getActionCommand().equals("Exit")) {
         	System.exit(1);
         }
@@ -91,18 +92,23 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	c.remove(b1);
         	c.remove(b2);
         	c.add(game);
+        	c.add(stats);
         }
         else if(e.getActionCommand().equals("Close")) {
         	c.add(b1);
         	c.add(b2);
         	game.resetGame();
         	c.remove(game);
+        	c.remove(stats);
+
         }
         else if(e.getActionCommand().equals("Start")) {
         	c.remove(b1);
         	c.remove(b2);
         	game.resetGame();
         	c.add(game);
+        	c.add(stats);
+
         }
     }
     
@@ -110,6 +116,9 @@ public class FrameEnclose extends JFrame implements ActionListener{
 		super.paint(g);
 		if(game.getLives() == 0) {
 			c.remove(game);
+        	c.remove(stats);
+			c.add(b1);
+        	c.add(b2);
 		}
 		repaint();
 	}
