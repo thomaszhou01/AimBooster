@@ -10,6 +10,7 @@ public class GameStats extends JPanel{
 		game = new Game();
 		
 		this.setBackground(Color.lightGray);
+		setDoubleBuffered(true);
 		this.setBounds(50, 50, game.jPanelLength, 50);
 	}
 	

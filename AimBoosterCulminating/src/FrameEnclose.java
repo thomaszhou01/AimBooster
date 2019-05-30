@@ -91,6 +91,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         else if(e.getActionCommand().equals("Open")) {
         	c.remove(b1);
         	c.remove(b2);
+        	game.resetGame();
         	c.add(game);
         	c.add(stats);
         }
