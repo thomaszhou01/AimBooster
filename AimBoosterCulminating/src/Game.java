@@ -1,6 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import javax.swing.*;
+
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -74,6 +82,7 @@ public class Game extends JPanel implements ActionListener{
 			//removes hit circles
 			for(int i = 0; i<targets.size(); i++) {
 				if(targets.size()>0 && targets.get(i).insideCircle()) {
+					music();
 					xValue = -100;
 					yValue = -100;
 					targets.remove(i);
@@ -134,6 +143,16 @@ public class Game extends JPanel implements ActionListener{
         targets.clear();
 	}
 	
+	public static void music() {
+		InputStream music;
+		try {
+			music = new FileInputStream(new File("src/Sounds/pop.wav"));
+			AudioStream audio = new AudioStream(music);
+			AudioPlayer.player.start(audio);
+		}catch(Exception e) {
+			
+		}
+	}
 	public void actionPerformed(ActionEvent e) {
 	}
 }

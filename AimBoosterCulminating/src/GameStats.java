@@ -16,6 +16,7 @@ public class GameStats extends JPanel{
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		//displays the stats of current game
 		g.drawString("Accuracy: "+game.hitPercent()+"%", 50, 20);
 		g.drawString("Targets Hit "+game.getHits()+"/"+game.getClicks(), 200, 20);
 		g.drawString("Lives: "+game.getLives(), 350, 20);
