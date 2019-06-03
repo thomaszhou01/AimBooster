@@ -1,19 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
+import javax.sound.sampled.*;
 import javax.swing.*;
-
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Game extends JPanel implements ActionListener{
+public class Game extends JPanel{
 	
 	public int radius;
 	public int jPanelLength;
@@ -21,6 +15,7 @@ public class Game extends JPanel implements ActionListener{
 	private int xValue;
 	private int yValue;
 	private int count;
+	private final int maxLives;
 	private static int clicks;
 	private static int hits;
 	private static int lives;
@@ -40,7 +35,8 @@ public class Game extends JPanel implements ActionListener{
         count = 0;
         clicks = 0;
         hits = 0;
-        lives = 10;
+        maxLives = 1;
+        lives = maxLives;
         
         //add mouse listener
 		addMouseListener(new MouseAdapter() {
@@ -82,7 +78,7 @@ public class Game extends JPanel implements ActionListener{
 			//removes hit circles
 			for(int i = 0; i<targets.size(); i++) {
 				if(targets.size()>0 && targets.get(i).insideCircle()) {
-					music();
+					play("src/Sounds/pop.wav");
 					xValue = -100;
 					yValue = -100;
 					targets.remove(i);
@@ -114,12 +110,13 @@ public class Game extends JPanel implements ActionListener{
 		if(targets.get(i).getDiameter()==0) {
 			targets.remove(i);
 			lives--;
+			play("src/Sounds/miss.wav");
 		}
 	}
 	
 	public double hitPercent() {
 		//displays hit percent
-		hitPercent = Math.round((hits/(double)clicks)*100.0);
+		hitPercent = Math.round((hits/(double)clicks)*1000.0)/10.0;
 		return hitPercent;
 	}
 	
@@ -134,25 +131,28 @@ public class Game extends JPanel implements ActionListener{
 	public int getClicks() {
 		return clicks;
 	}
+	
 	public void resetGame() {
 		//resets game
 		count = 0;
         clicks = 0;
         hits = 0;
-        lives = 10;
+        lives = maxLives;
         targets.clear();
 	}
 	
-	public static void music() {
-		InputStream music;
-		try {
-			music = new FileInputStream(new File("src/Sounds/pop.wav"));
-			AudioStream audio = new AudioStream(music);
-			AudioPlayer.player.start(audio);
-		}catch(Exception e) {
-			
-		}
+	//from https://stackoverflow.com/questions/2416935/how-to-play-wav-files-with-java
+	public static void play(String fileLoc) {
+		try
+	    {
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(AudioSystem.getAudioInputStream(new File(fileLoc)));
+	        clip.start();
+	    }
+	    catch (Exception exc)
+	    {
+	        exc.printStackTrace(System.out);
+	    }
 	}
-	public void actionPerformed(ActionEvent e) {
-	}
+	
 }

@@ -2,34 +2,36 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public class FrameEnclose extends JFrame implements ActionListener{
-    static MainMenu menu;
-    static Game game;
-    static GameStats stats;
+    MainMenu menu;
+    Game game;
+    GameStats stats;
+    PostGame post;
     
     JButton b1, b2;
+    ImageLabel logo, text;
     Container c = getContentPane();
 
     public FrameEnclose(String a) {
         super(a);
         c.setLayout(null);
-        c.setBackground(Color.gray);
+        c.setBackground(Color.DARK_GRAY);
         game = new Game();
         stats = new GameStats();
+        post = new PostGame();
         
         //buttons 
-        b1 = new JButton("Stuff");
-        b1.setBounds(150, 300, 300, 100);
-        b1.setBackground(Color.yellow);
-        b2 = new JButton("Start");
-        b2.setBounds(500, 300, 300, 100);
-        b2.setBackground(Color.yellow);
+        b1 = new JButton("Options");
+        b1.setBounds(150, 600, 300, 75);
+        b1.setBackground(Color.orange);
         b1.addActionListener(this);
-        b2.addActionListener(this);
         c.add(b1);
+        b2 = new JButton("Start");
+        b2.setBounds(550, 600, 300, 75);
+        b2.setBackground(Color.orange);
+        b2.addActionListener(this);
         c.add(b2);
 
         //top menu bar
@@ -79,49 +81,92 @@ public class FrameEnclose extends JFrame implements ActionListener{
         d.addActionListener(this);
         jmiAbout.addActionListener(this);
         
+        //from http://www.java2s.com/Code/JavaAPI/javax.swing/JLabelsetIconIconicon.htm
+        logo = new ImageLabel(new ImageIcon("src/Images/logo.png"));
+        logo.setLocation(136, 40);
+        text = new ImageLabel(new ImageIcon("src/Images/text.png"));
+        text.setLocation(356, 60);
+        this.add(logo);
+        this.add(text);
+        
         //add menubar
         this.setJMenuBar(jmb);
     }
 
     public void actionPerformed(ActionEvent e) {
     	//determines what menubar and buttons do
+    	
         if(e.getActionCommand().equals("Exit")) {
         	System.exit(1);
         }
-        else if(e.getActionCommand().equals("Open")) {
+        else if(e.getActionCommand().equals("Open") || e.getActionCommand().equals("Start")) {
         	c.remove(b1);
         	c.remove(b2);
         	game.resetGame();
         	c.add(game);
         	c.add(stats);
+			c.remove(post);
+			post.reset();
+        	this.remove(logo);
+        	this.remove(text);
         }
         else if(e.getActionCommand().equals("Close")) {
         	c.add(b1);
         	c.add(b2);
-        	game.resetGame();
         	c.remove(game);
         	c.remove(stats);
-
-        }
-        else if(e.getActionCommand().equals("Start")) {
-        	c.remove(b1);
-        	c.remove(b2);
-        	game.resetGame();
-        	c.add(game);
-        	c.add(stats);
+        	c.remove(post);
 
         }
     }
     
     public void paint(Graphics g) {
 		super.paint(g);
+		
 		if(game.getLives() == 0) {
+			c.add(post);
 			c.remove(game);
         	c.remove(stats);
-			c.add(b1);
-        	c.add(b2);
 		}
+		
+		if(post.getPlayAgain()) {
+			game.resetGame();
+			c.remove(post);
+			c.add(game);
+			c.add(stats);
+			post.reset();
+		}
+		else if(post.getMain()) {
+			game.resetGame();
+			c.remove(post);
+			c.add(b1);
+			c.add(b2);
+			post.reset();
+			this.add(logo);
+        	this.add(text);
+			
+		}
+		
 		repaint();
 	}
     
 }
+
+//from http://www.java2s.com/Code/JavaAPI/javax.swing/JLabelsetIconIconicon.htm
+class ImageLabel extends JLabel {
+
+	  public ImageLabel(String img) {
+	    this(new ImageIcon(img));
+	  }
+
+	  public ImageLabel(ImageIcon icon) {
+	    setIcon(icon);
+	    // setMargin(new Insets(0,0,0,0));
+	    setIconTextGap(0);
+	    // setBorderPainted(false);
+	    setBorder(null);
+	    setText(null);
+	    setSize(icon.getImage().getWidth(null), icon.getImage().getHeight(null));
+	  }
+
+	}

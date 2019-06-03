@@ -1,7 +1,5 @@
 import java.awt.Image;
-import java.io.*;
 import javax.swing.ImageIcon;
-import sun.audio.*;
 
 public class Target{	
 	
@@ -27,7 +25,7 @@ public class Target{
 		not200 = true;
 		xValue = x;
 		yValue = y;
-		circleExpandRate = 0.5;
+		circleExpandRate = 1;
 		maxCircleSize = 200;
 		maxCircleRadius = maxCircleSize/2;
 		diameter = 0;
