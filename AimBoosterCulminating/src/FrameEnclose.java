@@ -122,11 +122,18 @@ public class FrameEnclose extends JFrame implements ActionListener{
     
     public void paint(Graphics g) {
 		super.paint(g);
-		
+		stats.getHitPercent(game.hitPercent());
+		stats.getHits(game.getHits());
+		stats.getClicks(game.getClicks());
+		stats.getLives(game.getLives());
 		if(game.getLives() == 0) {
 			c.add(post);
 			c.remove(game);
         	c.remove(stats);
+        	
+        	post.getHitPercent(game.hitPercent());
+        	post.getHits(game.getHits());
+        	post.getClicks(game.getClicks());
 		}
 		
 		if(post.getPlayAgain()) {

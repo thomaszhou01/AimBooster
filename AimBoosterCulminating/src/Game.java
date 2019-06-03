@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Game extends JPanel{
+public class Game extends JPanel implements ActionListener{
 	
 	public int radius;
 	public int jPanelLength;
@@ -16,14 +16,14 @@ public class Game extends JPanel{
 	private int yValue;
 	private int count;
 	private final int maxLives;
-	private static int clicks;
-	private static int hits;
-	private static int lives;
-	private static double hitPercent;
+	private int clicks;
+	private int hits;
+	private int lives;
+	private double hitPercent;
 
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private Random random = new Random();
-
+	
 	
 	//constructor
 	public Game() {
@@ -35,8 +35,9 @@ public class Game extends JPanel{
         count = 0;
         clicks = 0;
         hits = 0;
-        maxLives = 1;
+        maxLives = 3;
         lives = maxLives;
+
         
         //add mouse listener
 		addMouseListener(new MouseAdapter() {
@@ -57,7 +58,7 @@ public class Game extends JPanel{
 		//count to determine when to add circle
 		count++;
 		//adds only one circle
-		if(count%200 == 0 ||count == 1) {
+		if(count%75 == 0) {
 			randomCircle();
 		}
 		
@@ -76,21 +77,27 @@ public class Game extends JPanel{
 			}
 			
 			//removes hit circles
-			for(int i = 0; i<targets.size(); i++) {
+			for(int i = targets.size()-1; i>=0 ; i--) {
 				if(targets.size()>0 && targets.get(i).insideCircle()) {
 					play("src/Sounds/pop.wav");
 					xValue = -100;
 					yValue = -100;
 					targets.remove(i);
 					hits++;
+					break;
 				}
 			}
 			
 			xValue = -100;
 			yValue = -100;
+		}		
+		//keep framerate constant 
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		g.fillOval(xValue, yValue, 2, 2);
 		Toolkit.getDefaultToolkit().sync();
 	}
 	
@@ -99,8 +106,8 @@ public class Game extends JPanel{
 	public void randomCircle() {
 
 		//from https://stackoverflow.com/questions/32534601/java-getting-a-random-number-from-100-to-999
-		int randX = random.nextInt(jPanelLength-2*Target.getMaxRadius())+Target.getMaxRadius();
-		int randY = random.nextInt(jPanelHeight-2*Target.getMaxRadius())+Target.getMaxRadius();
+		int randX = random.nextInt(jPanelLength);
+		int randY = random.nextInt(jPanelHeight);
         targets.add(new Target(randX, randY));
 		
 	}
@@ -155,4 +162,6 @@ public class Game extends JPanel{
 	    }
 	}
 	
+	public void actionPerformed(ActionEvent e) {
+	}
 }

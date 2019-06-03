@@ -12,6 +12,10 @@ public class PostGame extends JPanel implements ActionListener{
 	private Image image;
 	private Game game;
 	
+	private double hitPercent;
+	private int hits;
+	private int clicks;
+	
 	public boolean playAgain, mainMenu;
 
 	public PostGame() {
@@ -20,23 +24,10 @@ public class PostGame extends JPanel implements ActionListener{
 		this.setLayout(null);
 		game = new Game();
 		
-		finalScore = new JTextArea("Final Scores");
-		finalScore.setFont(new Font("Times", Font.BOLD, 50));
-		finalScore.setBounds(150, 20, 300, 80);
-		finalScore.setBackground(Color.lightGray);
-		this.add(finalScore);
 		
-		accuracy = new JTextArea("Accuracy:");
-		accuracy.setFont(new Font("Times", Font.ITALIC, 30));
-		accuracy.setBounds(50, 120, 150, 50);
-		accuracy.setBackground(Color.lightGray);
-		this.add(accuracy);
-		
-		hit = new JTextArea("Targets hit:");
-		hit.setFont(new Font("Times", Font.ITALIC, 30));
-		hit.setBounds(50, 220, 150, 50);
-		hit.setBackground(Color.lightGray);
-		this.add(hit);
+		this.add(createText(finalScore, "Final Scores", new Font("Times", Font.BOLD, 50), 150, 20, 300, 80));
+		this.add(createText(accuracy, "Accuracy:", new Font("Times", Font.ITALIC, 30), 50, 120, 150, 50));
+		this.add(createText(hit, "Targets hit:", new Font("Times", Font.ITALIC, 30), 50, 220, 170, 50));
 		
 		//buttons on bottom
 		again = new JButton("Play Again");
@@ -65,8 +56,8 @@ public class PostGame extends JPanel implements ActionListener{
 		g.setFont(new Font("Times", Font.PLAIN, 30));
 		
 		g.drawImage(image, 300, 300, 100, 100, this);
-		g.drawString(game.hitPercent()+"%", 200, 152);
-		g.drawString(game.getHits()+"/"+game.getClicks(), 220, 250);
+		g.drawString(hitPercent+"", 200, 152);
+		g.drawString(hits+"/"+clicks, 220, 250);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -77,6 +68,26 @@ public class PostGame extends JPanel implements ActionListener{
 			mainMenu = true;
 		}
 		
+	}
+	
+	//creating textAreas
+	public JTextArea createText(JTextArea a, String name, Font newFont, int boundX, int boundY, int x, int y) {
+		a = new JTextArea(name);
+		a.setFont(newFont);
+		a.setBounds(boundX, boundY, x, y);
+		a.setBackground(Color.lightGray);
+		return a;
+	}
+	public void getHitPercent(double hitPer) {
+		hitPercent = hitPer;
+	}
+	
+	public void getHits(int newHits) {
+		hits = newHits;
+	}
+	
+	public void getClicks(int newClicks) {
+		clicks = newClicks;
 	}
 	
 	public boolean getPlayAgain() {

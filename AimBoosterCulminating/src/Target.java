@@ -4,8 +4,8 @@ import javax.swing.ImageIcon;
 public class Target{	
 	
 	private static int maxCircleSize;
-	private static int maxCircleRadius;
 	private static double circleExpandRate;
+	
 	private double diameter;
 	private double radius;
 	private int xValue;
@@ -25,14 +25,16 @@ public class Target{
 		not200 = true;
 		xValue = x;
 		yValue = y;
-		circleExpandRate = 1;
+		circleExpandRate = 2;
 		maxCircleSize = 200;
-		maxCircleRadius = maxCircleSize/2;
 		diameter = 0;
 		image = new ImageIcon("src/Images/target.png").getImage();
 
 	}
 	
+	public static void setCircleExpand(double x) {
+		circleExpandRate = circleExpandRate+x;
+	}
 	public Image getImage() {
 		return image;
 	}
@@ -45,9 +47,6 @@ public class Target{
 		return yValue;
 	}
 	
-	public static int getMaxRadius() {
-		return maxCircleRadius;
-	}
 	public double getDiameter() {
 		return diameter;
 	}
