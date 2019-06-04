@@ -9,18 +9,18 @@ import java.util.Random;
 
 public class Game extends JPanel implements ActionListener{
 	
-	public int radius;
+	private int radius;
 	public int jPanelLength;
 	public int jPanelHeight;
 	private int xValue;
 	private int yValue;
 	private int count;
-	private final int maxLives;
 	private int clicks;
 	private int hits;
 	private int lives;
 	private double hitPercent;
 
+	private final int maxLives;
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private Random random = new Random();
 	private static Image back;
@@ -36,7 +36,7 @@ public class Game extends JPanel implements ActionListener{
         count = 0;
         clicks = 0;
         hits = 0;
-        maxLives = 3;
+        maxLives = 5;
         lives = maxLives;
 
         back = new ImageIcon("src/Images/gameBack.png").getImage();
@@ -49,8 +49,8 @@ public class Game extends JPanel implements ActionListener{
 				clicks++;
 			}
 		});	
-		setDoubleBuffered(true);
         this.setBounds(50, 100, jPanelLength,jPanelHeight);
+		setDoubleBuffered(true);
 	}
 	
 	//paintcomponent

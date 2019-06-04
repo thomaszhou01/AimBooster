@@ -5,7 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class FrameEnclose extends JFrame implements ActionListener{
-    MainMenu menu;
+	MainMenu menu;
     Game game;
     GameStats stats;
     PostGame post;
@@ -76,8 +76,8 @@ public class FrameEnclose extends JFrame implements ActionListener{
 
     //assigning button functions
     public void actionPerformed(ActionEvent e) {
-    	//determines what menubar and buttons do
     	
+    	//determines what menubar and buttons do
         if(e.getActionCommand().equals("Exit")) {
         	System.exit(1);
         }
@@ -107,11 +107,14 @@ public class FrameEnclose extends JFrame implements ActionListener{
     //paint graphics
     public void paint(Graphics g) {
 		super.paint(g);
+		
+		//get stats for the game bar
 		stats.getHitPercent(game.hitPercent());
 		stats.getHits(game.getHits());
 		stats.getClicks(game.getClicks());
 		stats.getLives(game.getLives());
 		
+		//stops game if player lives is 0
 		if(game.getLives() == 0) {
 			c.add(post);
 			c.remove(game);
@@ -122,6 +125,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	post.getClicks(game.getClicks());
 		}
 		
+		//replays game if use clicks button
 		if(post.getPlayAgain()) {
 			game.resetGame();
 			c.remove(post);
@@ -129,6 +133,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
 			c.add(stats);
 			post.reset();
 		}
+		//returns to main if player clicks button
 		else if(post.getMain()) {
 			game.resetGame();
 			c.remove(post);

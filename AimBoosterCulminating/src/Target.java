@@ -26,7 +26,7 @@ public class Target{
 		xValue = x;
 		yValue = y;
 		circleExpandRate = 4;
-		maxCircleSize = 100;
+		maxCircleSize = 200;
 		diameter = 0;
 		image = new ImageIcon("src/Images/target.png").getImage();
 
