@@ -23,7 +23,8 @@ public class Game extends JPanel implements ActionListener{
 
 	private ArrayList<Target> targets = new ArrayList<Target>();
 	private Random random = new Random();
-	
+	private static Image back;
+
 	
 	//constructor
 	public Game() {
@@ -38,7 +39,7 @@ public class Game extends JPanel implements ActionListener{
         maxLives = 3;
         lives = maxLives;
 
-        
+        back = new ImageIcon("src/Images/gameBack.png").getImage();
         //add mouse listener
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -55,6 +56,8 @@ public class Game extends JPanel implements ActionListener{
 	//paintcomponent
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.drawImage(back, 0, 0, this);
+		
 		//count to determine when to add circle
 		count++;
 		//adds only one circle

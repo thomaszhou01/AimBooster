@@ -48,24 +48,8 @@ public class FrameEnclose extends JFrame implements ActionListener{
         jmFile.addSeparator();
         jmFile.add(jmiExit);
         jmb.add(jmFile);
-
-        //options menubar with its items
-        JMenu jmOptions = new JMenu("Options");
-        JMenu jMenu = new JMenu("A");
-        JMenuItem b = new JMenuItem("B");
-        JMenuItem c = new JMenuItem("C");
-        JMenuItem d = new JMenuItem("D");
-        jMenu.add(b);
-        jMenu.add(c);
-        jMenu.add(d);
-        jmOptions.add(jMenu);
         
-        JMenu e = new JMenu("E");
-        e.add(new JMenuItem("F"));
-        e.add(new JMenuItem("G"));
-        jmOptions.add(e);
-        jmb.add(jmOptions);
-
+        
         //help menubar with items
         JMenu jmHelp = new JMenu("Help");
         JMenuItem jmiAbout = new JMenuItem("About");
@@ -76,9 +60,6 @@ public class FrameEnclose extends JFrame implements ActionListener{
         jmiOpen.addActionListener(this);
         jmiClose.addActionListener(this);
         jmiExit.addActionListener(this);
-        b.addActionListener(this);
-        c.addActionListener(this);
-        d.addActionListener(this);
         jmiAbout.addActionListener(this);
         
         //from http://www.java2s.com/Code/JavaAPI/javax.swing/JLabelsetIconIconicon.htm
@@ -93,6 +74,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         this.setJMenuBar(jmb);
     }
 
+    //assigning button functions
     public void actionPerformed(ActionEvent e) {
     	//determines what menubar and buttons do
     	
@@ -113,6 +95,8 @@ public class FrameEnclose extends JFrame implements ActionListener{
         else if(e.getActionCommand().equals("Close")) {
         	c.add(b1);
         	c.add(b2);
+        	this.add(logo);
+        	this.add(text);
         	c.remove(game);
         	c.remove(stats);
         	c.remove(post);
@@ -120,12 +104,14 @@ public class FrameEnclose extends JFrame implements ActionListener{
         }
     }
     
+    //paint graphics
     public void paint(Graphics g) {
 		super.paint(g);
 		stats.getHitPercent(game.hitPercent());
 		stats.getHits(game.getHits());
 		stats.getClicks(game.getClicks());
 		stats.getLives(game.getLives());
+		
 		if(game.getLives() == 0) {
 			c.add(post);
 			c.remove(game);
