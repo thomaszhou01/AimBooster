@@ -7,23 +7,23 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Game extends JPanel implements ActionListener{
+public class Game extends JPanel{
 	
-	private int radius;
 	public int jPanelLength;
 	public int jPanelHeight;
-	private int xValue;
-	private int yValue;
-	private int count;
-	private int clicks;
-	private int hits;
-	private int lives;
-	private double hitPercent;
+	public int xValue;
+	public int yValue;
+	public static int count;
+	public static int temp;
+	public static int clicks;
+	public static int hits;
+	public static int lives;
+	public static double hitPercent;
 
-	private final int maxLives;
-	private ArrayList<Target> targets = new ArrayList<Target>();
-	private Random random = new Random();
-	private static Image back;
+	public final int maxLives;
+	public static ArrayList<Target> targets = new ArrayList<Target>();
+	public Random random = new Random();
+	public static Image back;
 
 	
 	//constructor
@@ -35,6 +35,7 @@ public class Game extends JPanel implements ActionListener{
 
         count = 0;
         clicks = 0;
+        temp = 0;
         hits = 0;
         maxLives = 5;
         lives = maxLives;
@@ -50,7 +51,6 @@ public class Game extends JPanel implements ActionListener{
 			}
 		});	
         this.setBounds(50, 100, jPanelLength,jPanelHeight);
-		setDoubleBuffered(true);
 	}
 	
 	//paintcomponent
@@ -58,60 +58,23 @@ public class Game extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		g.drawImage(back, 0, 0, this);
 		
-		//count to determine when to add circle
-		count++;
-		//adds only one circle
-		if(count%75 == 0) {
-			randomCircle();
-		}
-		
-		//creates target if there are elements in array
-		if(targets.size()>0) {
-			//creates targets
-			for(int i = 0; i<targets.size(); i++) {
-				targets.get(i).circleSize();
-				
-				//from https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel
-				g.drawImage(targets.get(i).getImage(), (int)targets.get(i).getLocX(), (int)targets.get(i).getLocY(), (int)targets.get(i).getDiameter(), (int)targets.get(i).getDiameter(), this);
-				targets.get(i).setMouseLoc(xValue, yValue);
-				
-				//removes circles
-				removeCircle(i);	
-			}
-			
-			//removes hit circles
-			for(int i = targets.size()-1; i>=0 ; i--) {
-				if(targets.size()>0 && targets.get(i).insideCircle()) {
-					play("src/Sounds/pop.wav");
-					xValue = -100;
-					yValue = -100;
-					targets.remove(i);
-					hits++;
-					break;
-				}
-			}
-			
-			xValue = -100;
-			yValue = -100;
-		}		
 		//keep framerate constant 
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch blocka
 			e.printStackTrace();
 		}
-		Toolkit.getDefaultToolkit().sync();
 	}
 	
 	
 	//create random circles
-	public void randomCircle() {
+	public void randomCircle(int x) {
 
 		//from https://stackoverflow.com/questions/32534601/java-getting-a-random-number-from-100-to-999
 		int randX = random.nextInt(jPanelLength);
 		int randY = random.nextInt(jPanelHeight);
-        targets.add(new Target(randX, randY));
+        targets.add(new Target(randX, randY, x));
 		
 	}
 	
@@ -124,9 +87,13 @@ public class Game extends JPanel implements ActionListener{
 		}
 	}
 	
-	public double hitPercent() {
+	public void hitPercent(int newHits, int newClicks) {
 		//displays hit percent
-		hitPercent = Math.round((hits/(double)clicks)*1000.0)/10.0;
+		hitPercent = Math.round((newHits/(double)newClicks)*1000.0)/10.0;
+
+	}
+	
+	public double getHitPercent() {
 		return hitPercent;
 	}
 	
@@ -163,8 +130,5 @@ public class Game extends JPanel implements ActionListener{
 	    {
 	        exc.printStackTrace(System.out);
 	    }
-	}
-	
-	public void actionPerformed(ActionEvent e) {
 	}
 }

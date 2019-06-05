@@ -5,22 +5,31 @@ import java.awt.*;
 import javax.swing.*;
 
 public class FrameEnclose extends JFrame implements ActionListener{
-	MainMenu menu;
-    Game game;
-    GameStats stats;
-    PostGame post;
-    
-    JButton b1, b2;
-    ImageLabel logo, text;
-    Container c = getContentPane();
+	public MainMenu menu;
+	public Game game;
+	public GameStats stats;
+	public DefaultGame game1;
+	public FlickGame game2;
+	public PostGame post;
+	
+	private int gameNum;
+	private boolean gamePlaying;
+	private JButton b1, b2;
+	private ImageLabel logo, text;
+	private Container c = getContentPane();
 
     public FrameEnclose(String a) {
         super(a);
         c.setLayout(null);
         c.setBackground(Color.DARK_GRAY);
+        menu = new MainMenu();
         game = new Game();
+        game1 = new DefaultGame();
+        game2 = new FlickGame();
         stats = new GameStats();
         post = new PostGame();
+        gameNum = 0;
+        gamePlaying = false;
         
         //buttons 
         b1 = new JButton("Options");
@@ -49,6 +58,14 @@ public class FrameEnclose extends JFrame implements ActionListener{
         jmFile.add(jmiExit);
         jmb.add(jmFile);
         
+        //gamemode choosing
+        JMenu jmMode = new JMenu("Gamemode");
+        JMenuItem jmiDefault = new JMenuItem("Normal");
+        JMenuItem jmiFlick = new JMenuItem("Flick");
+        jmMode.add(jmiDefault);
+        jmMode.add(jmiFlick);
+        jmb.add(jmMode);
+        
         
         //help menubar with items
         JMenu jmHelp = new JMenu("Help");
@@ -60,6 +77,8 @@ public class FrameEnclose extends JFrame implements ActionListener{
         jmiOpen.addActionListener(this);
         jmiClose.addActionListener(this);
         jmiExit.addActionListener(this);
+        jmiDefault.addActionListener(this);
+        jmiFlick.addActionListener(this);
         jmiAbout.addActionListener(this);
         
         //from http://www.java2s.com/Code/JavaAPI/javax.swing/JLabelsetIconIconicon.htm
@@ -81,14 +100,21 @@ public class FrameEnclose extends JFrame implements ActionListener{
         if(e.getActionCommand().equals("Exit")) {
         	System.exit(1);
         }
+        //start actions
         else if(e.getActionCommand().equals("Open") || e.getActionCommand().equals("Start")) {
         	c.remove(b1);
         	c.remove(b2);
         	game.resetGame();
-        	c.add(game);
+        	if(gameNum == 0) {
+            	c.add(game1);
+        	}
+        	else if(gameNum == 1) {
+        		c.add(game2);
+        	}
         	c.add(stats);
 			c.remove(post);
 			post.reset();
+			gamePlaying = true;
         	this.remove(logo);
         	this.remove(text);
         }
@@ -97,10 +123,28 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	c.add(b2);
         	this.add(logo);
         	this.add(text);
-        	c.remove(game);
+        	if(gameNum == 0) {
+            	c.remove(game1);
+        	}
+        	else if(gameNum == 1) {
+        		c.remove(game2);
+        	}        	
         	c.remove(stats);
         	c.remove(post);
 
+        }
+        else if(e.getActionCommand().equals("Normal") && !gamePlaying) {
+        	gameNum = 0;
+        }
+        else if(e.getActionCommand().equals("Flick") && !gamePlaying) {
+        	gameNum = 1;
+        }
+        else if(e.getActionCommand().equals("Options")) {
+        	c.remove(b1);
+        	c.remove(b2);		
+        	this.remove(logo);
+        	this.remove(text);
+        	c.add(menu);
         }
     }
     
@@ -108,19 +152,19 @@ public class FrameEnclose extends JFrame implements ActionListener{
     public void paint(Graphics g) {
 		super.paint(g);
 		
-		//get stats for the game bar
-		stats.getHitPercent(game.hitPercent());
-		stats.getHits(game.getHits());
-		stats.getClicks(game.getClicks());
-		stats.getLives(game.getLives());
-		
 		//stops game if player lives is 0
 		if(game.getLives() == 0) {
 			c.add(post);
-			c.remove(game);
-        	c.remove(stats);
-        	
-        	post.getHitPercent(game.hitPercent());
+			if(gameNum == 0) {
+            	c.remove(game1);
+        	}
+        	else if(gameNum == 1) {
+        		c.remove(game2);
+        	}
+			//removes screens
+			c.remove(stats);
+        	gamePlaying = false;
+        	post.getHitPercent(game.getHitPercent());
         	post.getHits(game.getHits());
         	post.getClicks(game.getClicks());
 		}
@@ -129,7 +173,12 @@ public class FrameEnclose extends JFrame implements ActionListener{
 		if(post.getPlayAgain()) {
 			game.resetGame();
 			c.remove(post);
-			c.add(game);
+			if(gameNum == 0) {
+            	c.add(game1);
+        	}
+        	else if(gameNum == 1) {
+        		c.add(game2);
+        	}
 			c.add(stats);
 			post.reset();
 		}
@@ -144,6 +193,12 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	this.add(text);
 			
 		}
+
+		//get stats for the game bar
+		stats.getHits(game.getHits());
+		stats.getClicks(game.getClicks());
+		stats.getHitPercent(game.getHitPercent());
+		stats.getLives(game.getLives());
 		
 		repaint();
 	}
