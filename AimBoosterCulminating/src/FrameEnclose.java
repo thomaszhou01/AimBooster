@@ -1,7 +1,11 @@
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.*;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class FrameEnclose extends JFrame implements ActionListener{
@@ -12,6 +16,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
 	public FlickGame game2;
 	public PostGame post;
 	
+	private Clip clip;
 	private int gameNum;
 	private boolean gamePlaying;
 	private JButton b1, b2;
@@ -48,8 +53,8 @@ public class FrameEnclose extends JFrame implements ActionListener{
         JMenuBar jmb = new JMenuBar();
 
         //file menubar with its items
-        JMenu jmFile = new JMenu("File");
-        JMenuItem jmiOpen = new JMenuItem("Open");
+        JMenu jmFile = new JMenu("Game");
+        JMenuItem jmiOpen = new JMenuItem("Play");
         JMenuItem jmiClose = new JMenuItem("Close");
         JMenuItem jmiExit = new JMenuItem("Exit");
         jmFile.add(jmiOpen);
@@ -91,6 +96,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         
         //add menubar
         this.setJMenuBar(jmb);
+    	play("src/Sounds/back.wav");
     }
 
     //assigning button functions
@@ -101,10 +107,12 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	System.exit(1);
         }
         //start actions
-        else if(e.getActionCommand().equals("Open") || e.getActionCommand().equals("Start")) {
+        else if(e.getActionCommand().equals("Play") || e.getActionCommand().equals("Start")) {
         	c.remove(b1);
         	c.remove(b2);
         	game.resetGame();
+			Target.reset();
+			post.reset();
         	if(gameNum == 0) {
             	c.add(game1);
         	}
@@ -113,11 +121,12 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	}
         	c.add(stats);
 			c.remove(post);
-			post.reset();
+			c.remove(menu);
 			gamePlaying = true;
         	this.remove(logo);
         	this.remove(text);
         }
+        //close game
         else if(e.getActionCommand().equals("Close")) {
         	c.add(b1);
         	c.add(b2);
@@ -133,12 +142,15 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	c.remove(post);
 
         }
+        //Normal mode
         else if(e.getActionCommand().equals("Normal") && !gamePlaying) {
         	gameNum = 0;
         }
+        //Flick mode
         else if(e.getActionCommand().equals("Flick") && !gamePlaying) {
         	gameNum = 1;
         }
+        //Open Options
         else if(e.getActionCommand().equals("Options")) {
         	c.remove(b1);
         	c.remove(b2);		
@@ -167,11 +179,15 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	post.getHitPercent(game.getHitPercent());
         	post.getHits(game.getHits());
         	post.getClicks(game.getClicks());
+        	post.getInner(game.getInner());
+    		post.getMiddle(game.getMiddle());
+    		post.getOuter(game.getOuter());
 		}
 		
 		//replays game if use clicks button
 		if(post.getPlayAgain()) {
 			game.resetGame();
+			Target.reset();
 			c.remove(post);
 			if(gameNum == 0) {
             	c.add(game1);
@@ -179,6 +195,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	else if(gameNum == 1) {
         		c.add(game2);
         	}
+			gamePlaying = true;
 			c.add(stats);
 			post.reset();
 		}
@@ -197,11 +214,30 @@ public class FrameEnclose extends JFrame implements ActionListener{
 		//get stats for the game bar
 		stats.getHits(game.getHits());
 		stats.getClicks(game.getClicks());
-		stats.getHitPercent(game.getHitPercent());
 		stats.getLives(game.getLives());
-		
+		stats.getInner(game.getInner());
+		stats.getMiddle(game.getMiddle());
+		stats.getOuter(game.getOuter());
 		repaint();
 	}
+    
+    public void play(String fileLoc) {
+		try
+	    {
+			clip = AudioSystem.getClip();
+	        clip.open(AudioSystem.getAudioInputStream(new File(fileLoc)));
+	        clip.start();
+	        clip.loop(Clip.LOOP_CONTINUOUSLY);
+	    }
+	    catch (Exception exc)
+	    {
+	        exc.printStackTrace(System.out);
+	    }
+	}
+    
+    public void stopMusic() {
+    	clip.stop();
+    }
     
 }
 

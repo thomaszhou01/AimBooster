@@ -13,11 +13,17 @@ public class Game extends JPanel{
 	public int jPanelHeight;
 	public int xValue;
 	public int yValue;
+	public boolean clicked;
 	public static int count;
-	public static int temp;
 	public static int clicks;
 	public static int hits;
 	public static int lives;
+	
+	public static int inner;
+	public static int middle;
+	public static int outer;
+
+	
 	public static double hitPercent;
 
 	public final int maxLives;
@@ -35,8 +41,8 @@ public class Game extends JPanel{
 
         count = 0;
         clicks = 0;
-        temp = 0;
         hits = 0;
+        clicked = false;
         maxLives = 5;
         lives = maxLives;
 
@@ -48,6 +54,8 @@ public class Game extends JPanel{
 				yValue = e.getY();
 				//from https://stackoverflow.com/questions/3383887/how-to-record-the-number-of-mouse-clicks
 				clicks++;
+				clicked = true;
+
 			}
 		});	
         this.setBounds(50, 100, jPanelLength,jPanelHeight);
@@ -65,6 +73,8 @@ public class Game extends JPanel{
 			// TODO Auto-generated catch blocka
 			e.printStackTrace();
 		}
+		hitPercent();
+
 	}
 	
 	
@@ -87,10 +97,9 @@ public class Game extends JPanel{
 		}
 	}
 	
-	public void hitPercent(int newHits, int newClicks) {
+	public void hitPercent() {
 		//displays hit percent
-		hitPercent = Math.round((newHits/(double)newClicks)*1000.0)/10.0;
-
+		hitPercent = Math.round((hits/(double)clicks)*1000.0)/10.0;
 	}
 	
 	public double getHitPercent() {
@@ -109,11 +118,26 @@ public class Game extends JPanel{
 		return clicks;
 	}
 	
+	public int getInner() {
+		return inner;
+	}
+	
+	public int getMiddle() {
+		return middle;
+	}
+	
+	public int getOuter() {
+		return outer;
+	}
+	
 	public void resetGame() {
 		//resets game
 		count = 0;
         clicks = 0;
         hits = 0;
+        inner = 0;
+        middle = 0;
+        outer = 0;
         lives = maxLives;
         targets.clear();
 	}

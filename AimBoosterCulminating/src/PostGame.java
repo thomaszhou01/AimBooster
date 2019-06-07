@@ -8,13 +8,16 @@ import javax.swing.*;
 public class PostGame extends JPanel implements ActionListener{
 	
 	private JButton again, quit;
-	private JTextArea finalScore, accuracy, hit;	
+	private JTextArea finalScore, accuracy, hit, inText, midText, outText;	
 	private Image image;
 	private Game game;
 	
 	private double hitPercent;
 	private int hits;
 	private int clicks;
+	private int inner;
+	private int middle;
+	private int outer;
 	
 	public boolean playAgain, mainMenu;
 
@@ -27,7 +30,11 @@ public class PostGame extends JPanel implements ActionListener{
 		
 		this.add(createText(finalScore, "Final Scores", new Font("Times", Font.BOLD, 50), 150, 20, 300, 80));
 		this.add(createText(accuracy, "Accuracy:", new Font("Times", Font.ITALIC, 30), 50, 120, 150, 50));
-		this.add(createText(hit, "Targets hit:", new Font("Times", Font.ITALIC, 30), 50, 220, 170, 50));
+		this.add(createText(hit, "Targets hit:", new Font("Times", Font.ITALIC, 30), 50, 190, 170, 50));
+		this.add(createText(inText, "Inner hit:", new Font("Times", Font.ITALIC, 30), 50, 260, 170, 50));
+		this.add(createText(midText, "Middle hit:", new Font("Times", Font.ITALIC, 30), 50, 330, 170, 50));
+		this.add(createText(outText, "Outer hit:", new Font("Times", Font.ITALIC, 30), 50, 400, 170, 50));
+
 		
 		//buttons on bottom
 		again = new JButton("Play Again");
@@ -42,9 +49,6 @@ public class PostGame extends JPanel implements ActionListener{
         quit.addActionListener(this);
         this.add(quit);
         
-        
-		image = new ImageIcon("src/Images/target.png").getImage();
-
         //bounds on frame
 		setDoubleBuffered(true);
 		this.setBounds(200, 75, 600, 600);
@@ -56,8 +60,13 @@ public class PostGame extends JPanel implements ActionListener{
 		g.setFont(new Font("Times", Font.PLAIN, 30));
 		
 		g.drawImage(image, 300, 300, 100, 100, this);
-		g.drawString(hitPercent+"", 200, 152);
-		g.drawString(hits+"/"+clicks, 220, 250);
+		g.drawString(hitPercent+"%", 240, 152);
+		g.drawString(hits+"/"+clicks, 240, 221);
+		g.drawString(inner+"/"+hits, 240, 291);
+		g.drawString(middle+"/"+hits, 240, 361);
+		g.drawString(outer+"/"+hits, 240, 431);
+
+
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -88,6 +97,16 @@ public class PostGame extends JPanel implements ActionListener{
 	
 	public void getClicks(int newClicks) {
 		clicks = newClicks;
+	}
+
+	public void getInner(int newIn) {
+		inner = newIn;
+	}
+	public void getMiddle(int newMid) {
+		middle = newMid;
+	}
+	public void getOuter(int newOut) {
+		outer = newOut;
 	}
 	
 	public boolean getPlayAgain() {

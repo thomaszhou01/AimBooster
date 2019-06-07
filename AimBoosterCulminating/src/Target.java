@@ -5,6 +5,9 @@ public class Target{
 	
 	private static int maxCircleSize = 150;
 	private static double circleExpandRate = 2;
+	private static int inner;
+	private static int middle;
+	private static int outer;
 	
 	private double diameter;
 	private double radius;
@@ -112,8 +115,37 @@ public class Target{
 		return radius;
 	}
 	
+	public int getInner() {
+		return inner;
+	}
+	
+	public int getMiddle() {
+		return middle;
+	}
+	
+	public int getOuter() {
+		return outer;
+	}
+	
+	public static void reset() {
+		inner = 0;
+		middle = 0;
+		outer = 0;
+	}
 	//checks if click is inside the circle
 	public boolean insideCircle() {
+		//checks where it hits 
+		if (fromCenterDist <= radius*0.2) {
+			inner++;
+		}
+		else if (fromCenterDist > radius*0.2 && fromCenterDist <= radius*0.8) {
+			middle++;
+		}
+		else if (fromCenterDist > radius*0.8 && fromCenterDist <= radius) {
+			outer++;
+		}
+		
+		//checks if hit
 		if (fromCenterDist <= radius) {
 			return true;
 			
@@ -121,5 +153,19 @@ public class Target{
 		else {
 			return false;
 		}
+	}
+	
+	//determine where player hit
+	public int accuracyHit() {
+		if(fromCenterDist<=radius*.2) {
+			return 0;
+		}
+		else if(fromCenterDist>radius*2 && fromCenterDist<=radius*0.8) {
+			return 1;
+		}
+		else if(fromCenterDist>radius*0.8 && fromCenterDist<=radius){
+			return 2;
+		}
+		else return 3;
 	}
 }

@@ -38,10 +38,14 @@ public class FlickGame extends Game{
 			for(int i = targets.size()-1; i>=0 ; i--) {
 				if(targets.size()>0 && targets.get(i).insideCircle()) {
 					play("src/Sounds/pop.wav");
+					inner = targets.get(i).getInner();
+					middle = targets.get(i).getMiddle();
+					outer = targets.get(i).getOuter();
+					
 					xValue = -Target.getMaxCircle();
 					yValue = -Target.getMaxCircle();
-					targets.remove(i);
 					hits++;
+					targets.remove(i);
 					break;
 				}
 			}

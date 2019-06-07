@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 
 public class DefaultGame extends Game{
+	
 	public DefaultGame() {
 		super();
 		xValue = -Target.getMaxCircle();
@@ -11,8 +12,6 @@ public class DefaultGame extends Game{
 		super.paintComponent(g);
 		//count to determine when to add circle
 		count++;
-		g.drawString(temp+"", 20, 20);
-		g.drawString(clicks+"", 20, 30);
 
 		//adds only one circle
 		if(count%40 == 0) {
@@ -30,28 +29,27 @@ public class DefaultGame extends Game{
 				targets.get(i).setMouseLoc(xValue, yValue);
 				
 				//removes circles
-				removeCircle(i);	
+				removeCircle(i);
+				
 			}
 			
-			//removes hit circles
 			for(int i = targets.size()-1; i>=0 ; i--) {
 				if(targets.size()>0 && targets.get(i).insideCircle()) {
 					play("src/Sounds/pop.wav");
+					inner = targets.get(i).getInner();
+					middle = targets.get(i).getMiddle();
+					outer = targets.get(i).getOuter();
+
 					xValue = -Target.getMaxCircle();
 					yValue = -Target.getMaxCircle();
-					targets.remove(i);
 					hits++;
+					targets.remove(i);
 					break;
 				}
 			}
-			
 			xValue = -Target.getMaxCircle();
 			yValue = -Target.getMaxCircle();
 		}
-		hitPercent(hits, clicks);
 
-		if(clicks == (temp+1)) {
-			temp++;
-		}
 	}
 }
