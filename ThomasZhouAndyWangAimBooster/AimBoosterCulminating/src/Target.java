@@ -1,13 +1,14 @@
 import java.awt.Image;
-import java.io.*;
 import javax.swing.ImageIcon;
-import sun.audio.*;
 
 public class Target{	
 	
-	private static int maxCircleSize;
-	private static int maxCircleRadius;
-	private static double circleExpandRate;
+	private static int maxCircleSize = 150;
+	private static double circleExpandRate = 2;
+	private static int inner;
+	private static int middle;
+	private static int outer;
+	
 	private double diameter;
 	private double radius;
 	private int xValue;
@@ -23,18 +24,18 @@ public class Target{
 	
 
 	
-	public Target(int x, int y) {
+	public Target(int x, int y, int newDia) {
 		not200 = true;
 		xValue = x;
 		yValue = y;
-		circleExpandRate = 0.5;
-		maxCircleSize = 200;
-		maxCircleRadius = maxCircleSize/2;
-		diameter = 0;
+		diameter = newDia;
 		image = new ImageIcon("src/Images/target.png").getImage();
 
 	}
 	
+	public static void setCircleExpand(double x) {
+		circleExpandRate = circleExpandRate+x;
+	}
 	public Image getImage() {
 		return image;
 	}
@@ -47,13 +48,13 @@ public class Target{
 		return yValue;
 	}
 	
-	public static int getMaxRadius() {
-		return maxCircleRadius;
-	}
 	public double getDiameter() {
 		return diameter;
 	}
 	
+	public void setDiameter(double dia) {
+		diameter = dia;
+	}
 	public double getLocX() {
 		return (xValue-diameter/2);
 	}
@@ -67,13 +68,21 @@ public class Target{
 		mouseY = y;
 	}
 	
+	public static int getMaxCircle() {
+		return maxCircleSize;
+	}
+	
 	//changes circle size
 	public double circleSize() {
 		//determine circle's size
+		
 		if(diameter<= maxCircleSize && not200) {
-			diameter += circleExpandRate;
-			if(diameter>=maxCircleSize && diameter<=maxCircleSize+1 && not200) {
+			if(diameter>=maxCircleSize && diameter<=(maxCircleSize+1) && not200) {
 				not200 = false;
+			}
+			else {
+				diameter += circleExpandRate;
+
 			}
 		}
 		else if(diameter<0) {
@@ -106,8 +115,37 @@ public class Target{
 		return radius;
 	}
 	
+	public int getInner() {
+		return inner;
+	}
+	
+	public int getMiddle() {
+		return middle;
+	}
+	
+	public int getOuter() {
+		return outer;
+	}
+	
+	public static void reset() {
+		inner = 0;
+		middle = 0;
+		outer = 0;
+	}
 	//checks if click is inside the circle
 	public boolean insideCircle() {
+		//checks where it hits 
+		if (fromCenterDist <= radius*0.2) {
+			inner++;
+		}
+		else if (fromCenterDist > radius*0.2 && fromCenterDist <= radius*0.8) {
+			middle++;
+		}
+		else if (fromCenterDist > radius*0.8 && fromCenterDist <= radius) {
+			outer++;
+		}
+		
+		//checks if hit
 		if (fromCenterDist <= radius) {
 			return true;
 			
@@ -115,5 +153,19 @@ public class Target{
 		else {
 			return false;
 		}
+	}
+	
+	//determine where player hit
+	public int accuracyHit() {
+		if(fromCenterDist<=radius*.2) {
+			return 0;
+		}
+		else if(fromCenterDist>radius*2 && fromCenterDist<=radius*0.8) {
+			return 1;
+		}
+		else if(fromCenterDist>radius*0.8 && fromCenterDist<=radius){
+			return 2;
+		}
+		else return 3;
 	}
 }

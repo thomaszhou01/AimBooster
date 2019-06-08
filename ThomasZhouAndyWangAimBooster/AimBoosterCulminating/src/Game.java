@@ -1,33 +1,35 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
+import javax.sound.sampled.*;
 import javax.swing.*;
-
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Game extends JPanel implements ActionListener{
+public class Game extends JPanel{
 	
-	public int radius;
 	public int jPanelLength;
 	public int jPanelHeight;
-	private int xValue;
-	private int yValue;
-	private int count;
-	private static int clicks;
-	private static int hits;
-	private static int lives;
-	private static double hitPercent;
+	public int xValue;
+	public int yValue;
+	public boolean clicked;
+	public static int count;
+	public static int clicks;
+	public static int hits;
+	public static int lives;
+	
+	public static int inner;
+	public static int middle;
+	public static int outer;
 
-	private ArrayList<Target> targets = new ArrayList<Target>();
-	private Random random = new Random();
+	
+	public static double hitPercent;
+
+	public final int maxLives;
+	public static ArrayList<Target> targets = new ArrayList<Target>();
+	public Random random = new Random();
+	public static Image back;
 
 	
 	//constructor
@@ -40,8 +42,11 @@ public class Game extends JPanel implements ActionListener{
         count = 0;
         clicks = 0;
         hits = 0;
-        lives = 10;
-        
+        clicked = false;
+        maxLives = 5;
+        lives = maxLives;
+
+        back = new ImageIcon("src/Images/gameBack.png").getImage();
         //add mouse listener
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -49,63 +54,37 @@ public class Game extends JPanel implements ActionListener{
 				yValue = e.getY();
 				//from https://stackoverflow.com/questions/3383887/how-to-record-the-number-of-mouse-clicks
 				clicks++;
+				clicked = true;
+
 			}
 		});	
-		setDoubleBuffered(true);
         this.setBounds(50, 100, jPanelLength,jPanelHeight);
 	}
 	
 	//paintcomponent
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//count to determine when to add circle
-		count++;
-		//adds only one circle
-		if(count%200 == 0 ||count == 1) {
-			randomCircle();
-		}
+		g.drawImage(back, 0, 0, this);
 		
-		//creates target if there are elements in array
-		if(targets.size()>0) {
-			//creates targets
-			for(int i = 0; i<targets.size(); i++) {
-				targets.get(i).circleSize();
-				
-				//from https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel
-				g.drawImage(targets.get(i).getImage(), (int)targets.get(i).getLocX(), (int)targets.get(i).getLocY(), (int)targets.get(i).getDiameter(), (int)targets.get(i).getDiameter(), this);
-				targets.get(i).setMouseLoc(xValue, yValue);
-				
-				//removes circles
-				removeCircle(i);	
-			}
-			
-			//removes hit circles
-			for(int i = 0; i<targets.size(); i++) {
-				if(targets.size()>0 && targets.get(i).insideCircle()) {
-					music();
-					xValue = -100;
-					yValue = -100;
-					targets.remove(i);
-					hits++;
-				}
-			}
-			
-			xValue = -100;
-			yValue = -100;
+		//keep framerate constant 
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch blocka
+			e.printStackTrace();
 		}
+		hitPercent();
 
-		g.fillOval(xValue, yValue, 2, 2);
-		Toolkit.getDefaultToolkit().sync();
 	}
 	
 	
 	//create random circles
-	public void randomCircle() {
+	public void randomCircle(int x) {
 
 		//from https://stackoverflow.com/questions/32534601/java-getting-a-random-number-from-100-to-999
-		int randX = random.nextInt(jPanelLength-2*Target.getMaxRadius())+Target.getMaxRadius();
-		int randY = random.nextInt(jPanelHeight-2*Target.getMaxRadius())+Target.getMaxRadius();
-        targets.add(new Target(randX, randY));
+		int randX = random.nextInt(jPanelLength);
+		int randY = random.nextInt(jPanelHeight);
+        targets.add(new Target(randX, randY, x));
 		
 	}
 	
@@ -114,12 +93,16 @@ public class Game extends JPanel implements ActionListener{
 		if(targets.get(i).getDiameter()==0) {
 			targets.remove(i);
 			lives--;
+			play("src/Sounds/miss.wav");
 		}
 	}
 	
-	public double hitPercent() {
+	public void hitPercent() {
 		//displays hit percent
-		hitPercent = Math.round((hits/(double)clicks)*100.0);
+		hitPercent = Math.round((hits/(double)clicks)*1000.0)/10.0;
+	}
+	
+	public double getHitPercent() {
 		return hitPercent;
 	}
 	
@@ -134,25 +117,42 @@ public class Game extends JPanel implements ActionListener{
 	public int getClicks() {
 		return clicks;
 	}
+	
+	public int getInner() {
+		return inner;
+	}
+	
+	public int getMiddle() {
+		return middle;
+	}
+	
+	public int getOuter() {
+		return outer;
+	}
+	
 	public void resetGame() {
 		//resets game
 		count = 0;
         clicks = 0;
         hits = 0;
-        lives = 10;
+        inner = 0;
+        middle = 0;
+        outer = 0;
+        lives = maxLives;
         targets.clear();
 	}
 	
-	public static void music() {
-		InputStream music;
-		try {
-			music = new FileInputStream(new File("src/Sounds/pop.wav"));
-			AudioStream audio = new AudioStream(music);
-			AudioPlayer.player.start(audio);
-		}catch(Exception e) {
-			
-		}
-	}
-	public void actionPerformed(ActionEvent e) {
+	//from https://stackoverflow.com/questions/2416935/how-to-play-wav-files-with-java
+	public static void play(String fileLoc) {
+		try
+	    {
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(AudioSystem.getAudioInputStream(new File(fileLoc)));
+	        clip.start();
+	    }
+	    catch (Exception exc)
+	    {
+	        exc.printStackTrace(System.out);
+	    }
 	}
 }
