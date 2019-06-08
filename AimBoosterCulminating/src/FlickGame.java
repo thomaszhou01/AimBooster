@@ -6,21 +6,17 @@ public class FlickGame extends Game{
 	
 	public FlickGame() {
 		super();
-		max = Target.getMaxCircle();
-		xValue = -Target.getMaxCircle();
-		yValue = -Target.getMaxCircle();
+		
 	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		//count to determine when to add circle
-		
+		max = Target.getMaxCircle();
 
-
-		
 		count++;
 		//adds only one circle
-		if(count%speed*2 == 0) {
+		if(count%(speed*4) == 0) {
 			randomCircle(max);
 			randomCircle(max);
 		}
@@ -40,7 +36,7 @@ public class FlickGame extends Game{
 			
 			//removes hit circles
 			for(int i = targets.size()-1; i>=0 ; i--) {
-				if(targets.size()>0 && targets.get(i).insideCircle()) {
+				if(targets.size()>0 && targets.get(i).insideCircle()&&clicked) {
 					play("src/Sounds/pop.wav");
 					//get target hit place
 					inner = targets.get(i).getInner();
@@ -53,14 +49,16 @@ public class FlickGame extends Game{
 					yValue = -Target.getMaxCircle();
 					hits++;
 					targets.remove(i);
+					clicked = false;
 					break;
 				}
 			}
-			
-			//reset cursor 
 
-			xValue = -Target.getMaxCircle();
-			yValue = -Target.getMaxCircle();
-		}					
+		}			
+		//reset cursor 
+		xValue = -Target.getMaxCircle();
+		yValue = -Target.getMaxCircle();
+		
+	
 	}
 }

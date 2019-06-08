@@ -65,8 +65,9 @@ public class MainMenu extends JPanel implements ActionListener{
 		gameSpeed = 50;
 		speedGen = 2;
 		
-		//set jPanel information
+		//set panel information
 		this.setBackground(Color.LIGHT_GRAY);
+		this.setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.black));
 		this.setBounds(100, 50, 800, 650);
 	}
 	

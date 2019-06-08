@@ -15,6 +15,7 @@ public class GameStats extends JPanel{
 	public GameStats() {
 		game = new Game();
 		
+		this.setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.black));
 		this.setBackground(Color.lightGray);
 		setDoubleBuffered(true);
 		this.setBounds(50, 50, game.jPanelLength, 50);

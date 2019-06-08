@@ -10,7 +10,6 @@ public class PostGame extends JPanel implements ActionListener{
 	private JButton again, quit;
 	private JTextArea finalScore, accuracy, hit, inText, midText, outText;	
 	private Image image;
-	private Game game;
 	
 	private double hitPercent;
 	private int hits;
@@ -21,12 +20,10 @@ public class PostGame extends JPanel implements ActionListener{
 	
 	public boolean playAgain, mainMenu;
 
+	//constructor
 	public PostGame() {
-		
-		this.setBackground(Color.lightGray);
-		this.setLayout(null);
-		game = new Game();
-		
+		//set panel settings
+		this.setLayout(null);		
 		
 		this.add(createText(finalScore, "Final Scores", new Font("Times", Font.BOLD, 50), 150, 20, 300, 80));
 		this.add(createText(accuracy, "Accuracy:", new Font("Times", Font.ITALIC, 30), 50, 120, 150, 50));
@@ -49,8 +46,10 @@ public class PostGame extends JPanel implements ActionListener{
         quit.addActionListener(this);
         this.add(quit);
         
-        //bounds on frame
+        //frame settings
 		setDoubleBuffered(true);
+		this.setBackground(Color.lightGray);
+		this.setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.black));
 		this.setBounds(200, 75, 600, 600);
 
 	}

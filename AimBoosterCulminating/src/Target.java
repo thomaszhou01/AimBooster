@@ -21,9 +21,7 @@ public class Target{
 	//from https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel
 	private static Image image;
 	
-	
-
-	
+	//constructor
 	public Target(int x, int y, int newDia) {
 		not200 = true;
 		xValue = x;
@@ -75,9 +73,6 @@ public class Target{
 		return maxCircleSize;
 	}
 	
-	public boolean test() {
-		return diameter>=(maxCircleSize-1);
-	}
 	//changes circle size
 	public double circleSize() {
 		//determine circle's size

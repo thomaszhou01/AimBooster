@@ -59,6 +59,9 @@ public class Game extends JPanel{
 
 			}
 		});	
+		
+		//set panel settings
+		this.setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.black));
         this.setBounds(50, 100, jPanelLength,jPanelHeight);
 	}
 	

@@ -5,8 +5,6 @@ public class DefaultGame extends Game{
 	//default game 
 	public DefaultGame() {
 		super();
-		xValue = -Target.getMaxCircle();
-		yValue = -Target.getMaxCircle();
 	}
 	
 	//paint
@@ -35,7 +33,7 @@ public class DefaultGame extends Game{
 			}
 			
 			for(int i = targets.size()-1; i>=0 ; i--) {
-				if(targets.size()>0 && targets.get(i).insideCircle()) {
+				if(targets.size()>0 && targets.get(i).insideCircle()&&clicked) {
 					play("src/Sounds/pop.wav");
 					//get target hit place 
 					inner = targets.get(i).getInner();
@@ -47,13 +45,15 @@ public class DefaultGame extends Game{
 					yValue = -Target.getMaxCircle();
 					hits++;
 					targets.remove(i);
+					clicked = false;
 					break;
 				}
 			}
-			//reset cursor 
-			xValue = -Target.getMaxCircle();
-			yValue = -Target.getMaxCircle();
+			
 		}
-
+		
+		//reset cursor 
+		xValue = -Target.getMaxCircle();
+		yValue = -Target.getMaxCircle();
 	}
 }

@@ -23,10 +23,12 @@ public class FrameEnclose extends JFrame implements ActionListener{
 	private ImageLabel logo, text;
 	private Container c = getContentPane();
 
+	//constructor
     public FrameEnclose(String a) {
+    	//initializing variables and setting layout of container
         super(a);
         c.setLayout(null);
-        c.setBackground(Color.DARK_GRAY);
+        c.setBackground(Color.GRAY);
         menu = new MainMenu();
         game = new Game();
         game1 = new DefaultGame();
@@ -36,12 +38,13 @@ public class FrameEnclose extends JFrame implements ActionListener{
         gameNum = 0;
         gamePlaying = false;
         
-        //buttons 
+        //buttons: options  
         b1 = new JButton("Options");
         b1.setBounds(150, 600, 300, 75);
         b1.setBackground(Color.orange);
         b1.addActionListener(this);
         c.add(b1);
+        //Start
         b2 = new JButton("Start");
         b2.setBounds(550, 600, 300, 75);
         b2.setBackground(Color.orange);
@@ -118,18 +121,21 @@ public class FrameEnclose extends JFrame implements ActionListener{
 			Target.reset();
 			post.reset();
         	c.add(stats);
+        	
+        	
+        	//set game options
+        	game.setLives(menu.getLife());
+        	game.setSpeed(menu.getSpeed());
+        	Target.setCircleExpand(menu.getGen());
+        	Target.setMaxCircle(menu.getTargetSize());
+        	
         	if(gameNum == 0) {
             	c.add(game1);
         	}
         	else if(gameNum == 1) {
         		c.add(game2);
         	}
-			//set game options
-        	game.setLives(menu.getLife());
-        	game.setSpeed(menu.getSpeed());
-        	Target.setCircleExpand(menu.getGen());
-        	Target.setMaxCircle(menu.getTargetSize());
-        	
+			
         	//remove elements
 			c.remove(post);
 			c.remove(menu);
@@ -149,8 +155,13 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	else if(gameNum == 1) {
         		c.remove(game2);
         	}        	
+        	
+        	//reset
+        	post.reset();
+        	game.resetGame();
+        	
 			gamePlaying = false;
-        	c.remove(stats);
+        	c.remove(stats);        	
         	c.remove(post);
 
         }
@@ -241,6 +252,13 @@ public class FrameEnclose extends JFrame implements ActionListener{
 			game.resetGame();
 			Target.reset();
 			c.remove(menu);
+			
+			//set game options
+        	game.setLives(menu.getLife());
+        	game.setSpeed(menu.getSpeed());
+        	Target.setCircleExpand(menu.getGen());
+        	Target.setMaxCircle(menu.getTargetSize());
+        	//adds game
 			if(gameNum == 0) {
             	c.add(game1);
         	}
@@ -248,12 +266,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         		c.add(game2);
         	}
 			c.add(stats);
-			//set game options
-        	game.setLives(menu.getLife());
-        	game.setSpeed(menu.getSpeed());
-        	Target.setCircleExpand(menu.getGen());
-        	Target.setMaxCircle(menu.getTargetSize());
-        	
+			
 			menu.reset();
 		}
 		//main menu
