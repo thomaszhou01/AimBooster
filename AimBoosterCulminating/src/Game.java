@@ -22,11 +22,12 @@ public class Game extends JPanel{
 	public static int inner;
 	public static int middle;
 	public static int outer;
+	public static int speed;
 
 	
 	public static double hitPercent;
 
-	public final int maxLives;
+	public int maxLives = 5;
 	public static ArrayList<Target> targets = new ArrayList<Target>();
 	public Random random = new Random();
 	public static Image back;
@@ -42,8 +43,8 @@ public class Game extends JPanel{
         count = 0;
         clicks = 0;
         hits = 0;
+        speed = 50;
         clicked = false;
-        maxLives = 5;
         lives = maxLives;
 
         back = new ImageIcon("src/Images/gameBack.png").getImage();
@@ -130,6 +131,14 @@ public class Game extends JPanel{
 		return outer;
 	}
 	
+	public void setLives(int life) {
+		maxLives = life;
+		lives = maxLives;
+	}
+	
+	public void setSpeed(int sped) {
+		speed = sped;
+	}
 	public void resetGame() {
 		//resets game
 		count = 0;

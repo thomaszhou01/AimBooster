@@ -57,6 +57,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         JMenuItem jmiOpen = new JMenuItem("Play");
         JMenuItem jmiClose = new JMenuItem("Close");
         JMenuItem jmiExit = new JMenuItem("Exit");
+        //adding items to bar
         jmFile.add(jmiOpen);
         jmFile.add(jmiClose);
         jmFile.addSeparator();
@@ -67,6 +68,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         JMenu jmMode = new JMenu("Gamemode");
         JMenuItem jmiDefault = new JMenuItem("Normal");
         JMenuItem jmiFlick = new JMenuItem("Flick");
+        //adding items to bar
         jmMode.add(jmiDefault);
         jmMode.add(jmiFlick);
         jmb.add(jmMode);
@@ -74,7 +76,8 @@ public class FrameEnclose extends JFrame implements ActionListener{
         
         //help menubar with items
         JMenu jmHelp = new JMenu("Help");
-        JMenuItem jmiAbout = new JMenuItem("About");
+        JMenuItem jmiAbout = new JMenuItem("How to Play");
+        //adding items to bar
         jmHelp.add(jmiAbout);
         jmb.add(jmHelp);
 
@@ -87,6 +90,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         jmiAbout.addActionListener(this);
         
         //from http://www.java2s.com/Code/JavaAPI/javax.swing/JLabelsetIconIconicon.htm
+        //Adding images
         logo = new ImageLabel(new ImageIcon("src/Images/logo.png"));
         logo.setLocation(136, 40);
         text = new ImageLabel(new ImageIcon("src/Images/text.png"));
@@ -106,27 +110,34 @@ public class FrameEnclose extends JFrame implements ActionListener{
         if(e.getActionCommand().equals("Exit")) {
         	System.exit(1);
         }
-        //start actions
+        //start actions: remove buttons, remove logos, add game, add stats bar, resets values
         else if(e.getActionCommand().equals("Play") || e.getActionCommand().equals("Start")) {
         	c.remove(b1);
         	c.remove(b2);
         	game.resetGame();
 			Target.reset();
 			post.reset();
+        	c.add(stats);
         	if(gameNum == 0) {
             	c.add(game1);
         	}
         	else if(gameNum == 1) {
         		c.add(game2);
         	}
-        	c.add(stats);
+			//set game options
+        	game.setLives(menu.getLife());
+        	game.setSpeed(menu.getSpeed());
+        	Target.setCircleExpand(menu.getGen());
+        	Target.setMaxCircle(menu.getTargetSize());
+        	
+        	//remove elements
 			c.remove(post);
 			c.remove(menu);
 			gamePlaying = true;
         	this.remove(logo);
         	this.remove(text);
         }
-        //close game
+        //close game, close game and stats, open buttons 
         else if(e.getActionCommand().equals("Close")) {
         	c.add(b1);
         	c.add(b2);
@@ -138,10 +149,12 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	else if(gameNum == 1) {
         		c.remove(game2);
         	}        	
+			gamePlaying = false;
         	c.remove(stats);
         	c.remove(post);
 
         }
+        //set modes
         //Normal mode
         else if(e.getActionCommand().equals("Normal") && !gamePlaying) {
         	gameNum = 0;
@@ -149,7 +162,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
         //Flick mode
         else if(e.getActionCommand().equals("Flick") && !gamePlaying) {
         	gameNum = 1;
-        }
+        } 
         //Open Options
         else if(e.getActionCommand().equals("Options")) {
         	c.remove(b1);
@@ -157,6 +170,13 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	this.remove(logo);
         	this.remove(text);
         	c.add(menu);
+        }
+        else if(e.getActionCommand().equals("How to Play")) {
+        	JOptionPane.showMessageDialog(c, "Aim Booster is a game designed to improve you mouse accuracy for FPS games."
+        			+ "\n- Upon hitting play, targets will randomly spawn on the playing area. "
+        			+ "\n- You must click the targets before they disappear. \n- If you miss a target, a life will be taken off."
+        			+ "\n- You can change the speed of target generation, the expand rate of targets, the size of the targets, and lives in the options menu.", 
+        			"How to Play", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
@@ -167,6 +187,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
 		//stops game if player lives is 0
 		if(game.getLives() == 0) {
 			c.add(post);
+			//removes correct game
 			if(gameNum == 0) {
             	c.remove(game1);
         	}
@@ -176,6 +197,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
 			//removes screens
 			c.remove(stats);
         	gamePlaying = false;
+        	//get data for post game
         	post.getHitPercent(game.getHitPercent());
         	post.getHits(game.getHits());
         	post.getClicks(game.getClicks());
@@ -184,11 +206,13 @@ public class FrameEnclose extends JFrame implements ActionListener{
     		post.getOuter(game.getOuter());
 		}
 		
+		//postGame window control
 		//replays game if use clicks button
 		if(post.getPlayAgain()) {
 			game.resetGame();
 			Target.reset();
 			c.remove(post);
+			//opens correct game
 			if(gameNum == 0) {
             	c.add(game1);
         	}
@@ -210,7 +234,39 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	this.add(text);
 			
 		}
+		
+		//options menu control
+		//play game button
+		if(menu.getPlay()) {
+			game.resetGame();
+			Target.reset();
+			c.remove(menu);
+			if(gameNum == 0) {
+            	c.add(game1);
+        	}
+        	else if(gameNum == 1) {
+        		c.add(game2);
+        	}
+			c.add(stats);
+			//set game options
+        	game.setLives(menu.getLife());
+        	game.setSpeed(menu.getSpeed());
+        	Target.setCircleExpand(menu.getGen());
+        	Target.setMaxCircle(menu.getTargetSize());
+        	
+			menu.reset();
+		}
+		//main menu
+		else if (menu.getMain()) {
+			c.remove(menu);
+			c.add(b1);
+			c.add(b2);
+			this.add(logo);
+			this.add(text);
+			menu.reset();
+		}
 
+		
 		//get stats for the game bar
 		stats.getHits(game.getHits());
 		stats.getClicks(game.getClicks());

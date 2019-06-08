@@ -2,19 +2,20 @@ import java.awt.Graphics;
 
 public class DefaultGame extends Game{
 	
+	//default game 
 	public DefaultGame() {
 		super();
 		xValue = -Target.getMaxCircle();
 		yValue = -Target.getMaxCircle();
 	}
 	
+	//paint
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		//count to determine when to add circle
 		count++;
-
 		//adds only one circle
-		if(count%40 == 0) {
+		if(count%speed== 0) {
 			randomCircle(0);
 		}
 		
@@ -36,10 +37,12 @@ public class DefaultGame extends Game{
 			for(int i = targets.size()-1; i>=0 ; i--) {
 				if(targets.size()>0 && targets.get(i).insideCircle()) {
 					play("src/Sounds/pop.wav");
+					//get target hit place 
 					inner = targets.get(i).getInner();
 					middle = targets.get(i).getMiddle();
 					outer = targets.get(i).getOuter();
 
+					//reset cursor
 					xValue = -Target.getMaxCircle();
 					yValue = -Target.getMaxCircle();
 					hits++;
@@ -47,6 +50,7 @@ public class DefaultGame extends Game{
 					break;
 				}
 			}
+			//reset cursor 
 			xValue = -Target.getMaxCircle();
 			yValue = -Target.getMaxCircle();
 		}

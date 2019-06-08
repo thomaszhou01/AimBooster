@@ -3,8 +3,8 @@ import javax.swing.ImageIcon;
 
 public class Target{	
 	
-	private static int maxCircleSize = 150;
-	private static double circleExpandRate = 2;
+	private static int maxCircleSize;
+	private static double circleExpandRate;
 	private static int inner;
 	private static int middle;
 	private static int outer;
@@ -33,8 +33,11 @@ public class Target{
 
 	}
 	
-	public static void setCircleExpand(double x) {
-		circleExpandRate = circleExpandRate+x;
+	public static void setCircleExpand(int expand) {
+		circleExpandRate = expand;
+	}
+	public static void setMaxCircle(int circ) {
+		maxCircleSize = circ;
 	}
 	public Image getImage() {
 		return image;
@@ -72,32 +75,32 @@ public class Target{
 		return maxCircleSize;
 	}
 	
+	public boolean test() {
+		return diameter>=(maxCircleSize-1);
+	}
 	//changes circle size
 	public double circleSize() {
 		//determine circle's size
-		
 		if(diameter<= maxCircleSize && not200) {
-			if(diameter>=maxCircleSize && diameter<=(maxCircleSize+1) && not200) {
+			//size increase
+			if(diameter>=(maxCircleSize-2) && diameter<=(maxCircleSize+2) && not200) {
+				//boolean to stop increase
 				not200 = false;
 			}
 			else {
+				//increase size
 				diameter += circleExpandRate;
 
 			}
 		}
-		else if(diameter<0) {
-			diameter = 0;
-			not200 = true;
-		}
 		else {
+			//size decrease
 			diameter -= circleExpandRate;
-			if(diameter == 0) {
-				not200 = true;
-			}
 		}
 		radius = diameter/2;
 		
 		//from https://stackoverflow.com/questions/22269951/using-listeners-and-mouse-pointer-location-to-check-if-pointer-is-inside-of-a-ci
+		//calculates distance mouse click is from the circle
 		fromCenterDist = Math.sqrt((Math.pow(mouseX-xValue, 2)+Math.pow(mouseY-yValue, 2)));
 		return diameter;
 	}	
@@ -153,19 +156,5 @@ public class Target{
 		else {
 			return false;
 		}
-	}
-	
-	//determine where player hit
-	public int accuracyHit() {
-		if(fromCenterDist<=radius*.2) {
-			return 0;
-		}
-		else if(fromCenterDist>radius*2 && fromCenterDist<=radius*0.8) {
-			return 1;
-		}
-		else if(fromCenterDist>radius*0.8 && fromCenterDist<=radius){
-			return 2;
-		}
-		else return 3;
 	}
 }
