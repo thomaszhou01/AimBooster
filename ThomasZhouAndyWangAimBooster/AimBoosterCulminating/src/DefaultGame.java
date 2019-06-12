@@ -1,20 +1,28 @@
+// Thomas Zhou, Andy Wang
+// June 10, 2019
+// Default game. Child of Game class. All random targets spawn one at a time
+// ICS3U7 Mr. Anthony
+
 import java.awt.Graphics;
 
 public class DefaultGame extends Game{
 	
+	//default game 
 	public DefaultGame() {
 		super();
-		xValue = -Target.getMaxCircle();
-		yValue = -Target.getMaxCircle();
 	}
 	
+	/* method paintComponent()
+	 * called automatically and creates targets for default game. targets spawn randomly and start at 0 diameter, increase to max size, and decrease to 0 
+	 * pre: class extends JPanel
+	 * post: draws/creates targets. if mouse is on a target, the target will be removed
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		//count to determine when to add circle
 		count++;
-
 		//adds only one circle
-		if(count%40 == 0) {
+		if(count%speed== 0) {
 			randomCircle(0);
 		}
 		
@@ -30,26 +38,31 @@ public class DefaultGame extends Game{
 				
 				//removes circles
 				removeCircle(i);
-				
 			}
 			
+			//removes hit circles
 			for(int i = targets.size()-1; i>=0 ; i--) {
-				if(targets.size()>0 && targets.get(i).insideCircle()) {
+				if(targets.size()>0 && targets.get(i).insideCircle()&&clicked) {
 					play("src/Sounds/pop.wav");
+					//get target hit place 
 					inner = targets.get(i).getInner();
 					middle = targets.get(i).getMiddle();
 					outer = targets.get(i).getOuter();
 
+					//reset cursor
 					xValue = -Target.getMaxCircle();
 					yValue = -Target.getMaxCircle();
 					hits++;
 					targets.remove(i);
+					clicked = false;
 					break;
 				}
 			}
-			xValue = -Target.getMaxCircle();
-			yValue = -Target.getMaxCircle();
+			
 		}
-
+		
+		//reset cursor 
+		xValue = -Target.getMaxCircle();
+		yValue = -Target.getMaxCircle();
 	}
 }
