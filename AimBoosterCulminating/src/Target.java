@@ -1,3 +1,8 @@
+// Thomas Zhou, Andy Wang
+// June 10, 2019
+// Target class. Used by game classes to create targets and to determine if user hits a target
+// ICS3U7 Mr. Anthony
+
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
@@ -31,49 +36,111 @@ public class Target{
 
 	}
 	
+	/* method setCircleExpand()
+	 * gets rate of circle expansion
+	 * pre: int expand rate
+	 * post: circleExpandRate is assigned an int value
+	 */
 	public static void setCircleExpand(int expand) {
 		circleExpandRate = expand;
 	}
+	
+	/* method setMaxCircle()
+	 * gets max circle size
+	 * pre: int maxCircle size
+	 * post: maxCircleSize is assigned an int value
+	 */
 	public static void setMaxCircle(int circ) {
 		maxCircleSize = circ;
 	}
+	
+	/* method getImage()
+	 * returns image of target
+	 * pre: called by class
+	 * post: image is returned
+	 */
 	public Image getImage() {
 		return image;
 	}
 	
+	/* method getX()
+	 * returns x value of location
+	 * pre: called by class
+	 * post: xValue is returned
+	 */
 	public int getX() {
 		return xValue;
 	}
 	
+	/* method getY()
+	 * returns y value of location
+	 * pre: called by class
+	 * post: yValue is returned
+	 */
 	public int getY() {
 		return yValue;
 	}
 	
+	/* method getDiameter()
+	 * returns diameter of target
+	 * pre: called by class
+	 * post: diameter is returned
+	 */
 	public double getDiameter() {
 		return diameter;
 	}
 	
+	/* method setDiameter()
+	 * sets the diameter
+	 * pre: double dia
+	 * post: diameter is set
+	 */
 	public void setDiameter(double dia) {
 		diameter = dia;
 	}
+	
+	/* method getLocX()
+	 * returns centered x value for target 
+	 * pre: called by class
+	 * post: x location for target
+	 */
 	public double getLocX() {
 		return (xValue-diameter/2);
 	}
 	
+	/* method getLocY()
+	 * returns centered y value for target 
+	 * pre: called by class
+	 * post: y location for target
+	 */
 	public double getLocY() {
 		return (yValue-diameter/2);
 	}
 	
+	/* method setMouseLoc()
+	 * gets the mouse location
+	 * pre: called by class
+	 * post: x and y integer coordinates are assigned
+	 */
 	public void setMouseLoc(int x, int y) {
 		mouseX  = x;
 		mouseY = y;
 	}
 	
+	/* method getMaxCircle()
+	 * returns maximum target size
+	 * pre: called by class
+	 * post: returns int maxCircleSize
+	 */
 	public static int getMaxCircle() {
 		return maxCircleSize;
 	}
 	
-	//changes circle size
+	/* method circleSize()
+	 * increases target size to a certain maximum and decreases to 0
+	 * pre: a target must use this variable
+	 * post: diameter will be changed
+	 */
 	public double circleSize() {
 		//determine circle's size
 		if(diameter<= maxCircleSize && not200) {
@@ -100,46 +167,77 @@ public class Target{
 		return diameter;
 	}	
 	
-	public boolean getNot200() {
-		return not200;
-	}
-	
+	/* method getCenterDist()
+	 * returns distance mouse is from circle
+	 * pre: called by class
+	 * post: fromCenterDist is returned
+	 */
 	public double getCenterDist() {
 		return fromCenterDist;
-
 	}
 	
+	
+	/* method getRadius()
+	 * returns radius of target 
+	 * pre: called by class
+	 * post: radius returned
+	 */
 	public double getRadius() {
 		return radius;
 	}
 	
+	/* method getInner()
+	 * returns number of clicks in inner part of target
+	 * pre: called by class
+	 * post: int inner
+	 */
 	public int getInner() {
 		return inner;
 	}
 	
+	/* method getMiddle()
+	 * returns number of clicks in middle part of target
+	 * pre: called by class
+	 * post: int middle
+	 */
 	public int getMiddle() {
 		return middle;
 	}
 	
+	/* method getOuter()
+	 * returns number of clicks in outer part of target
+	 * pre: called by class
+	 * post: int outer
+	 */
 	public int getOuter() {
 		return outer;
 	}
 	
+	/* method reset()
+	 * resets inner, middle, and outer
+	 * pre: called by class
+	 * post: variables reset
+	 */
 	public static void reset() {
 		inner = 0;
 		middle = 0;
 		outer = 0;
 	}
-	//checks if click is inside the circle
+	
+	/* method insideCircle()
+	 * checks if click is inside the target. Also checks which part in target is hit
+	 * pre: called by class
+	 * post: boolean
+	 */
 	public boolean insideCircle() {
 		//checks where it hits 
 		if (fromCenterDist <= radius*0.2) {
 			inner++;
 		}
-		else if (fromCenterDist > radius*0.2 && fromCenterDist <= radius*0.8) {
+		else if (fromCenterDist > radius*0.2 && fromCenterDist <= radius*0.6) {
 			middle++;
 		}
-		else if (fromCenterDist > radius*0.8 && fromCenterDist <= radius) {
+		else if (fromCenterDist > radius*0.6 && fromCenterDist <= radius) {
 			outer++;
 		}
 		

@@ -1,14 +1,23 @@
 import java.awt.Graphics;
+//Thomas Zhou, Andy Wang
+//June 10, 2019
+//FlickGame child of Game class. 2 targets spawn at a time at max size
+//ICS3U7 Mr. Anthony
 
 public class FlickGame extends Game{
 	
 	private int max;
 	
+	//constructor
 	public FlickGame() {
 		super();
-		
 	}
 	
+	/* method paintComponent()
+	 * called automatically and creates targets for flick game. 2 targets spawn each at max diameter and decrease to 0
+	 * pre: class extends JPanel
+	 * post: draws/creates targets. if mouse is on a target, the target will be removed
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		//count to determine when to add circle
@@ -26,6 +35,7 @@ public class FlickGame extends Game{
 			//creates targets
 			for(int i = 0; i<targets.size(); i++) {
 				targets.get(i).circleSize();
+				
 				//from https://stackoverflow.com/questions/299495/how-to-add-an-image-to-a-jpanel
 				g.drawImage(targets.get(i).getImage(), (int)targets.get(i).getLocX(), (int)targets.get(i).getLocY(), (int)targets.get(i).getDiameter(), (int)targets.get(i).getDiameter(), this);
 				targets.get(i).setMouseLoc(xValue, yValue);
