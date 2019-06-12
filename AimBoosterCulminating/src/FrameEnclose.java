@@ -308,12 +308,7 @@ public class FrameEnclose extends JFrame implements ActionListener{
 	    {
 	        exc.printStackTrace(System.out);
 	    }
-	}
-    
-    public void stopMusic() {
-    	clip.stop();
-    }
-    
+	}    
 }
 
 //from http://www.java2s.com/Code/JavaAPI/javax.swing/JLabelsetIconIconicon.htm

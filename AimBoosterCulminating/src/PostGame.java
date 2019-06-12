@@ -92,16 +92,13 @@ public class PostGame extends JPanel implements ActionListener{
 			g.drawImage(bronze, 410, 160, 100, 100, this);
 			break;
 		case 2:
-			g.drawImage(silver, 395, 10, 120, 100, this);
+			g.drawImage(silver, 395, 160, 120, 100, this);
 			break;
 		case 3:
 			g.drawImage(gold, 410, 160, 100, 100, this);
 			break;
 		case 4:
 			g.drawImage(max, 395, 160, 110, 100, this);
-			break;
-		default:
-			g.drawString("u no good", 350, 270);
 			break;
 		}
 		
