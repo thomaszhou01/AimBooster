@@ -28,8 +28,6 @@ public class Game extends JPanel{
 	public static int middle;
 	public static int outer;
 	public static int speed;
-
-	
 	public static double hitPercent;
 
 	public int maxLives = 5;

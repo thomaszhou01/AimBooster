@@ -155,6 +155,7 @@ public class Target{
 
 			}
 		}
+		//decrease target class
 		else {
 			//size decrease
 			diameter -= circleExpandRate;

@@ -22,7 +22,7 @@ public class PostGame extends JPanel implements ActionListener{
 	private int outer;
 	private int achievement;
 	
-	private Image bronze, silver, gold, max, trash, perfect;
+	private Image bronze, silver, gold, max, perfect;
 	public boolean playAgain, mainMenu;
 
 	//constructor
@@ -102,6 +102,7 @@ public class PostGame extends JPanel implements ActionListener{
 			break;
 		}
 		
+		//add perfect score medal
 		if(hitPercent==100) {
 			g.drawImage(perfect, 360, 270, 200, 180, this);
 		}

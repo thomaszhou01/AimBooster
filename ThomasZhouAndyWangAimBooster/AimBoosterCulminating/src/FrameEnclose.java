@@ -159,7 +159,6 @@ public class FrameEnclose extends JFrame implements ActionListener{
         	//reset
         	post.reset();
         	game.resetGame();
-        	
         	c.remove(stats);        	
         	c.remove(post);
 
