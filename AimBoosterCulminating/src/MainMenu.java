@@ -60,6 +60,7 @@ public class MainMenu extends JPanel implements ActionListener{
         
         //set variables
 		image = new ImageIcon("src/Images/target.png").getImage();
+		//defaults for game
 		life = 3;
 		imgSize = 100;
 		gameSpeed = 50;

@@ -29,6 +29,9 @@ public class FlickGame extends Game{
 			randomCircle(max);
 			randomCircle(max);
 		}
+		else if(count+1%speed==0) {
+			clicked=false;
+		}
 		
 		//creates target if there are elements in array
 		if(targets.size()>0) {
@@ -68,7 +71,6 @@ public class FlickGame extends Game{
 		//reset cursor 
 		xValue = -Target.getMaxCircle();
 		yValue = -Target.getMaxCircle();
-		
 	
 	}
 }
